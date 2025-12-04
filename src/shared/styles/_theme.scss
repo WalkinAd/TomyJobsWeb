@@ -1,0 +1,32 @@
+@use 'sass:map';
+@use 'variables' as *;
+
+:root {
+  --background: #{map.get($colors, background)};
+  --foreground: #{map.get($colors, foreground)};
+  --primary: #{$flutter-blue};
+  --primary-dark: #{$flutter-blue-dark};
+  --primary-light: #{$flutter-blue-light};
+  --primary-lighter: #{$flutter-blue-lighter};
+  --primary-lightest: #{$flutter-blue-lightest};
+  
+  @each $name, $value in $colors {
+    --color-#{"" + $name}: #{$value};
+  }
+  
+  @each $name, $value in $spacing {
+    --spacing-#{$name}: #{$value};
+  }
+  
+  @each $name, $value in $gap {
+    --gap-#{$name}: #{$value};
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #{map.get($colors, background-dark)};
+    --foreground: #{map.get($colors, foreground-dark)};
+  }
+}
+

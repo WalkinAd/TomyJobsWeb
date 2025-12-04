@@ -1,0 +1,28 @@
+@use 'sass:map';
+@use 'variables' as *;
+
+@mixin respond-to($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    $bp-value: map.get($breakpoints, $breakpoint);
+    @if $bp-value > 0 {
+      @media (min-width: $bp-value) {
+        @content;
+      }
+    } @else {
+      @content;
+    }
+  }
+}
+
+@mixin respond-below($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    $bp-value: map.get($breakpoints, $breakpoint);
+    @if $bp-value > 0 {
+      $max-width: $bp-value - 1px;
+      @media (max-width: $max-width) {
+        @content;
+      }
+    }
+  }
+}
+

@@ -1,0 +1,239 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.flex-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+@each $name, $value in $spacing {
+  .p-#{$name} {
+    padding: $value;
+  }
+  
+  .pt-#{$name} {
+    padding-top: $value;
+  }
+  
+  .pb-#{$name} {
+    padding-bottom: $value;
+  }
+  
+  .pl-#{$name} {
+    padding-left: $value;
+  }
+  
+  .pr-#{$name} {
+    padding-right: $value;
+  }
+  
+  .px-#{$name} {
+    padding-left: $value;
+    padding-right: $value;
+  }
+  
+  .py-#{$name} {
+    padding-top: $value;
+    padding-bottom: $value;
+  }
+  
+  .m-#{$name} {
+    margin: $value;
+  }
+  
+  .mt-#{$name} {
+    margin-top: $value;
+  }
+  
+  .mb-#{$name} {
+    margin-bottom: $value;
+  }
+  
+  .ml-#{$name} {
+    margin-left: $value;
+  }
+  
+  .mr-#{$name} {
+    margin-right: $value;
+  }
+  
+  .mx-#{$name} {
+    margin-left: $value;
+    margin-right: $value;
+  }
+  
+  .my-#{$name} {
+    margin-top: $value;
+    margin-bottom: $value;
+  }
+}
+
+@each $name, $value in $gap {
+  .gap-#{$name} {
+    gap: $value;
+  }
+  
+  .gap-x-#{$name} {
+    column-gap: $value;
+  }
+  
+  .gap-y-#{$name} {
+    row-gap: $value;
+  }
+}
+
+@each $bp-name, $bp-value in $breakpoints {
+  @if $bp-value > 0 {
+    @include respond-to($bp-name) {
+      .#{$bp-name}\:flex-col {
+        flex-direction: column;
+      }
+      
+      .#{$bp-name}\:flex-row {
+        flex-direction: row;
+      }
+      
+      .#{$bp-name}\:flex-wrap {
+        flex-wrap: wrap;
+      }
+      
+      .#{$bp-name}\:flex-nowrap {
+        flex-wrap: nowrap;
+      }
+      
+      .#{$bp-name}\:flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .#{$bp-name}\:flex-between {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      
+      .#{$bp-name}\:flex-start {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      
+      .#{$bp-name}\:flex-end {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      
+      @each $spacing-name, $spacing-value in $spacing {
+        .#{$bp-name}\:p-#{$spacing-name} {
+          padding: $spacing-value;
+        }
+        
+        .#{$bp-name}\:px-#{$spacing-name} {
+          padding-left: $spacing-value;
+          padding-right: $spacing-value;
+        }
+        
+        .#{$bp-name}\:py-#{$spacing-name} {
+          padding-top: $spacing-value;
+          padding-bottom: $spacing-value;
+        }
+        
+        .#{$bp-name}\:m-#{$spacing-name} {
+          margin: $spacing-value;
+        }
+        
+        .#{$bp-name}\:mx-#{$spacing-name} {
+          margin-left: $spacing-value;
+          margin-right: $spacing-value;
+        }
+        
+        .#{$bp-name}\:my-#{$spacing-name} {
+          margin-top: $spacing-value;
+          margin-bottom: $spacing-value;
+        }
+      }
+      
+      @each $gap-name, $gap-value in $gap {
+        .#{$bp-name}\:gap-#{$gap-name} {
+          gap: $gap-value;
+        }
+        
+        .#{$bp-name}\:gap-x-#{$gap-name} {
+          column-gap: $gap-value;
+        }
+        
+        .#{$bp-name}\:gap-y-#{$gap-name} {
+          row-gap: $gap-value;
+        }
+      }
+    }
+  }
+}
+
