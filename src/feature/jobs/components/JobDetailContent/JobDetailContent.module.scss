@@ -1,0 +1,114 @@
+@use 'sass:map';
+@use 'sass:color';
+@use '../../../../shared/styles/variables' as *;
+@use '../../../../shared/styles/mixins' as *;
+
+.content {
+  width: 100%;
+}
+
+.premiumBadge {
+  display: inline-block;
+  background: linear-gradient(
+    135deg,
+    map.get($colors, white) 0%,
+    color.change(map.get($colors, warning), $alpha: 0.3) 50%,
+    color.change(map.get($colors, warning), $alpha: 0.5) 100%
+  );
+  @include border-radius(sm);
+  font-family: $font-family;
+  @include font-size(xs);
+  font-weight: map.get($font-weights, semibold);
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.title {
+  font-family: $font-family;
+  @include font-size(xl);
+  font-weight: map.get($font-weights, bold);
+  color: var(--text-primary);
+  margin: 0;
+  flex: 1;
+  line-height: map.get($line-heights, tight);
+}
+
+.favoriteButton {
+  width: 40px;
+  height: 40px;
+  @include border-radius(base);
+  border: 1px solid color.change(map.get($colors, black), $alpha: 0.1);
+  background: var(--color-white);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  position: relative;
+  z-index: auto;
+
+  &:hover {
+    background: var(--scrollbar-track);
+    border-color: color.change(map.get($colors, black), $alpha: 0.2);
+  }
+
+  &.favoriteActive {
+    color: map.get($colors, error);
+    border-color: color.change(map.get($colors, error), $alpha: 0.3);
+  }
+}
+
+.hiringType {
+  display: inline-flex;
+  background: color.change(map.get($colors, warning), $alpha: 0.2);
+  color: var(--text-primary);
+  @include border-radius(sm);
+  font-family: $font-family;
+  @include font-size(sm);
+  font-weight: map.get($font-weights, semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sectionTitle {
+  font-family: $font-family;
+  @include font-size(lg);
+  font-weight: map.get($font-weights, semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.description {
+  font-family: $font-family;
+  @include font-size(base);
+  color: var(--text-primary);
+  line-height: map.get($line-heights, relaxed);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+
+  p {
+    margin: 0 0 map.get($spacing, s) 0;
+  }
+}
+
+.readMoreButton {
+  background: none;
+  border: none;
+  color: map.get($colors, primary);
+  font-family: $font-family;
+  @include font-size(sm);
+  font-weight: map.get($font-weights, semibold);
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.detailLabel {
+  font-weight: map.get($font-weights, semibold);
+  color: var(--text-secondary);
+  min-width: 120px;
+}
+

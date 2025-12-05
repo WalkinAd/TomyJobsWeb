@@ -1,0 +1,38 @@
+@use 'sass:map';
+@use 'sass:color';
+@use '../../../../shared/styles/variables' as *;
+@use '../../../../shared/styles/mixins' as *;
+
+.title {
+  font-family: $font-family;
+  @include font-size(lg);
+  font-weight: map.get($font-weights, semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.jobsList {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: map.get($spacing, s);
+  scrollbar-width: thin;
+  scrollbar-color: color.change(map.get($colors, black), $alpha: 0.2) transparent;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: color.change(map.get($colors, black), $alpha: 0.2);
+    @include border-radius(pill);
+
+    &:hover {
+      background: color.change(map.get($colors, black), $alpha: 0.3);
+    }
+  }
+}
+

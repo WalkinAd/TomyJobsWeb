@@ -9,10 +9,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const { locale, messages } = useAppSelector((state) => state.locale);
 
   useEffect(() => {
-    if (Object.keys(messages).length === 0) {
-      dispatch(loadMessages(locale));
+    const localeFromStore = locale;
+    const currentMessages = messages;
+    
+    if (localeFromStore !== "es" || Object.keys(currentMessages).length === 0) {
+      dispatch(loadMessages(localeFromStore));
     }
-  }, [locale, messages, dispatch]);
+  }, [locale, dispatch]);
 
   return <>{children}</>;
 }

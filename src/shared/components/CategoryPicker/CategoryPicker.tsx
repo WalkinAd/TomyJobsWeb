@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from '@/shared/hooks/useTranslations';
 import { Category } from '@/feature/jobs/types/category.types';
-import { FaFilter, FaChevronDown } from 'react-icons/fa';
+import { IoGrid, IoChevronDown } from 'react-icons/io5';
 import { IoSearch } from 'react-icons/io5';
 import styles from './CategoryPicker.module.scss';
 
@@ -61,7 +61,7 @@ export default function CategoryPicker({
 
   const displayText =
     selectedCategoryIds.length === 0
-      ? placeholder || t('lbl_select_category')
+      ? placeholder || t('lbl_all_categories')
       : selectedCategoryIds.length === 1
       ? selectedCategories[0]?.name || ''
       : `${selectedCategoryIds.length} ${t('lbl_categories')}`;
@@ -77,9 +77,9 @@ export default function CategoryPicker({
           setIsOpen(!isOpen);
         }}
       >
-        <FaFilter size={20} className={styles.filterIcon} />
+        <IoGrid size={20} className={styles.filterIcon} />
         <span className={styles.text}>{displayText}</span>
-        <FaChevronDown size={16} className={styles.chevronIcon} />
+        <IoChevronDown size={16} className={styles.chevronIcon} />
       </button>
 
       {isOpen && (

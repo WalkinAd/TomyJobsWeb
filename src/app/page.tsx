@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { useTranslations } from '@/shared/hooks/useTranslations';
 import { jobsService } from '@/feature/jobs/services/jobs.service';
 import { categoriesService } from '@/feature/jobs/services/categories.service';
@@ -11,14 +12,14 @@ import Header from '@/shared/components/Header/Header';
 import SearchBar from '@/shared/components/SearchBar/SearchBar';
 import CategorySlider from '@/shared/components/CategorySlider/CategorySlider';
 import JobCard from '@/shared/components/JobCard/JobCard';
-import Loading from '@/shared/components/Loading/Loading';
+import { HomePageSkeleton } from '@/shared/components/Skeleton/Skeleton';
 import EmptyState from '@/shared/components/EmptyState/EmptyState';
 import Footer from '@/shared/components/Footer/Footer';
 import styles from './page.module.scss';
 
 export default function Home() {
   const t = useTranslations('home');
-  const tCommon = useTranslations('common');
+  const router = useRouter();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -88,16 +89,25 @@ export default function Home() {
 
   const regularJobs = filteredJobs.slice(0, 8);
 
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <HomePageSkeleton isVisible={loading} />
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
-      <Loading isVisible={loading} text={tCommon('loading')} />
       <div className={`${styles.contentWrapper} py-xl`}>
         <div className={styles.container}>
           <h1 className={styles.title}>{t('msg_find_your_dream2')}</h1>
           <SearchBar
             categories={categories}
-            locations={locations}
+            locations={locations} 
             selectedCategoryIds={filters.categoryIds || []}
             selectedLocations={filters.locations || []}
             onSearch={handleSearch}
@@ -122,7 +132,13 @@ export default function Home() {
               </div>
               <div className={styles.jobsGrid}>
                 {featuredJobs.map((job) => (
-                  <JobCard key={job.docId} job={job} />
+                  <JobCard
+                    key={job.docId}
+                    job={job}
+                    onClick={() => {
+                      router.push(`/jobs/${job.docId}`);
+                    }}
+                  />
                 ))}
               </div>
             </section>
@@ -135,7 +151,13 @@ export default function Home() {
               </div>
               <div className={styles.jobsGrid}>
                 {regularJobs.map((job) => (
-                  <JobCard key={job.docId} job={job} />
+                  <JobCard
+                    key={job.docId}
+                    job={job}
+                    onClick={() => {
+                      router.push(`/jobs/${job.docId}`);
+                    }}
+                  />
                 ))}
               </div>
             </section>

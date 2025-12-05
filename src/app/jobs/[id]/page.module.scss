@@ -1,0 +1,71 @@
+@use 'sass:map';
+@use 'sass:color';
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--color-white);
+  padding-bottom: 100px;
+}
+
+.mainLayout {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.columnsLayout {
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
+}
+
+.leftColumn {
+  flex-shrink: 0;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.breadcrumbs {
+  font-family: $font-family;
+  @include font-size(sm);
+}
+
+.breadcrumbLink {
+  background: none;
+  border: none;
+  font-family: $font-family;
+  @include font-size(sm);
+  color: map.get($colors, primary);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: map.get($colors, primary-dark);
+    text-decoration: underline;
+  }
+}
+
+.separator {
+  color: var(--text-secondary);
+  margin: 0 map.get($spacing, xs);
+}
+
+.breadcrumbCurrent {
+  color: var(--text-primary);
+  font-weight: map.get($font-weights, semibold);
+}
+
+.rightColumn {
+  position: sticky;
+  top: map.get($spacing, xl);
+  width: 320px;
+  min-height: 240px;
+  height: fit-content;
+}
+

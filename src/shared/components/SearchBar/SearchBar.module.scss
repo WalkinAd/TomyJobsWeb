@@ -103,15 +103,16 @@
   background: var(--primary);
   color: var(--color-white);
   border: none;
-  border-radius: 0 9999px 9999px 0;
+  @include border-radius(pill);
   padding: 0 map.get($spacing, lg);
+  margin: map.get($spacing, xs);
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: $font-family;
   @include font-size(md);
   font-weight: map.get($font-weights, medium);
   white-space: nowrap;
-  min-height: 56px;
+  min-height: calc(56px - #{map.get($spacing, xs) * 2});
   flex-shrink: 0;
 
   &:hover {
@@ -182,9 +183,9 @@
   }
 
   .searchButton {
-    min-height: 48px;
+    min-height: calc(48px - #{map.get($spacing, xs) * 2});
     padding: 0 map.get($spacing, m);
-    border-radius: 0 9999px 9999px 0;
+    @include border-radius(pill);
     
     span {
       display: none;

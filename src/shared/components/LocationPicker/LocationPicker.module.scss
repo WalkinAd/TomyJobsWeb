@@ -11,17 +11,20 @@
 .trigger {
   gap: map.get($gap, s);
   padding: 0 map.get($spacing, l);
-  border: none;
+  border: 1px solid var(--input-border);
   background: transparent;
   cursor: pointer;
   color: var(--text-primary);
   @include font-size(base);
   white-space: nowrap;
-  min-height: 56px;
+  min-height: calc(56px - #{map.get($spacing, xs) * 2});
+  margin: map.get($spacing, xs);
+  @include border-radius(pill);
   transition: all 0.2s ease;
 
   &:hover {
     background: var(--primary-lightest);
+    border-color: var(--primary);
   }
 }
 

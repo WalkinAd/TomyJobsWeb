@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Locale } from "@/shared/i18n/config";
+import esMessages from "@/shared/i18n/messages/es.json";
 
 interface LocaleState {
   locale: Locale;
@@ -10,8 +11,7 @@ const getInitialLocale = (): Locale => {
   if (typeof window === "undefined") return "es";
   const saved = localStorage.getItem("locale") as Locale;
   if (saved && ["es", "en"].includes(saved)) return saved;
-  const browserLocale = navigator.language.split("-")[0] as Locale;
-  return ["es", "en"].includes(browserLocale) ? browserLocale : "es";
+  return "es";
 };
 
 export const loadMessages = createAsyncThunk(
@@ -29,7 +29,7 @@ export const loadMessages = createAsyncThunk(
 
 const initialState: LocaleState = {
   locale: getInitialLocale(),
-  messages: {},
+  messages: esMessages,
 };
 
 const localeSlice = createSlice({

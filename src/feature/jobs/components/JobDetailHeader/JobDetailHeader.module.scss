@@ -1,0 +1,62 @@
+@use 'sass:map';
+@use 'sass:color';
+@use '../../../../shared/styles/variables' as *;
+@use '../../../../shared/styles/mixins' as *;
+
+.stickyHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-white);
+  border-bottom: 1px solid color.change(map.get($colors, black), $alpha: 0.1);
+  box-shadow: 0 2px 8px color.change(map.get($colors, black), $alpha: 0.1);
+  z-index: 1000;
+  padding: map.get($spacing, s) 0;
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+
+  &.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  &.hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.thumbnail {
+  width: 60px;
+  height: 45px;
+  object-fit: cover;
+  @include border-radius(base);
+  background: var(--scrollbar-track);
+  flex-shrink: 0;
+}
+
+.title {
+  font-family: $font-family;
+  @include font-size(md);
+  font-weight: map.get($font-weights, semibold);
+  color: var(--text-primary);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.publisherName {
+  font-family: $font-family;
+  @include font-size(sm);
+  font-weight: map.get($font-weights, normal);
+  color: var(--text-secondary);
+  margin: map.get($spacing, xs) 0 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+

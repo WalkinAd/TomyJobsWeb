@@ -1,0 +1,262 @@
+@use 'sass:map';
+@use 'sass:color';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--scrollbar-track) 0%,
+    color.change(map.get($colors, gray-300), $alpha: 0.5) 50%,
+    var(--scrollbar-track) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  @include border-radius(base);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.homeSkeleton {
+  padding-top: calc(map.get($spacing, m) * 2 + 2rem + map.get($spacing, xl));
+
+  @include respond-below(md) {
+    padding-top: calc(map.get($spacing, s) * 2 + 1.5rem + map.get($spacing, xl));
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 map.get($spacing, l);
+}
+
+.visible {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.hidden {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.titleSkeleton {
+  width: 60%;
+  height: 2.5rem;
+}
+
+.categoriesSkeleton {
+  margin-top: map.get($spacing, xl);
+}
+
+.categoryItems {
+  overflow-x: auto;
+  padding: map.get($spacing, m) map.get($spacing, l);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.categoryItem {
+  flex-shrink: 0;
+  width: 97px;
+  height: 102px;
+  background: transparent;
+  border: 1px solid color.change(map.get($colors, black), $alpha: 0.08);
+  @include border-radius(base);
+  padding: map.get($spacing, m);
+}
+
+.categoryIcon {
+  width: 40px;
+  height: 40px;
+  @include border-radius(full);
+}
+
+.categoryText {
+  width: 3rem;
+  height: 0.875rem;
+}
+
+.jobsSectionSkeleton {
+  margin-top: map.get($spacing, xxl);
+}
+
+.sectionTitle {
+  width: 8rem;
+  height: 1.875rem;
+}
+
+.jobsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 240px);
+  gap: map.get($gap, l);
+  justify-content: start;
+  margin-top: map.get($gap, l);
+}
+
+@include respond-below(md) {
+  .jobsGrid {
+    grid-template-columns: repeat(auto-fill, 240px);
+    gap: map.get($gap, m);
+  }
+}
+
+.jobCardSkeleton {
+  width: 240px;
+  height: 280px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  @include border-radius(base);
+  overflow: hidden;
+}
+
+.jobImageWrapper {
+  width: 100%;
+  height: 160px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.jobImage {
+  width: 100%;
+  height: 100%;
+  @include border-radius(none);
+}
+
+.jobContent {
+  flex: 1;
+  min-height: 0;
+}
+
+.jobTitle {
+  width: 90%;
+  height: 1.125rem;
+}
+
+.jobSubtitle {
+  width: 70%;
+  height: 1.125rem;
+}
+
+.jobBadge {
+  width: 4rem;
+  height: 1.25rem;
+}
+
+.jobDate {
+  width: 3rem;
+  height: 0.875rem;
+}
+
+.jobDetailSkeleton {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--color-white);
+  padding-bottom: 100px;
+}
+
+.jobDetailContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: map.get($spacing, xl);
+}
+
+.jobDetailLayout {
+  gap: 12px;
+}
+
+.jobDetailLeftColumn {
+  flex-shrink: 0;
+}
+
+.jobDetailRightColumn {
+  position: sticky;
+  top: map.get($spacing, xl);
+  width: 320px;
+  min-height: 240px;
+  height: fit-content;
+}
+
+.breadcrumbsSkeleton {
+  gap: map.get($spacing, xs);
+}
+
+.breadcrumbSkeleton {
+  width: 80px;
+  height: 1rem;
+}
+
+.imageSkeleton {
+  width: 614px;
+  height: 260px;
+  @include border-radius(base);
+  margin-bottom: map.get($spacing, l);
+}
+
+.contentSkeleton {
+  width: 614px;
+}
+
+.titleSkeleton {
+  width: 70%;
+  height: 2rem;
+  margin-bottom: map.get($spacing, m);
+}
+
+.metaSkeleton {
+  width: 50%;
+  height: 1.25rem;
+  margin-bottom: map.get($spacing, l);
+}
+
+.descriptionSkeleton {
+  width: 100%;
+  height: 8rem;
+  margin-bottom: map.get($spacing, l);
+}
+
+.detailsSkeleton {
+  width: 100%;
+  height: 6rem;
+  margin-bottom: map.get($spacing, l);
+}
+
+.publisherSkeleton {
+  width: 100%;
+  height: 400px;
+  @include border-radius(base);
+}
+
+@include respond-below(lg) {
+  .jobDetailLayout {
+    flex-direction: column;
+  }
+
+  .jobDetailRightColumn {
+    position: relative;
+    top: 0;
+    width: 100%;
+  }
+
+  .imageSkeleton {
+    width: 100%;
+    max-width: 614px;
+  }
+
+  .contentSkeleton {
+    width: 100%;
+  }
+}
+

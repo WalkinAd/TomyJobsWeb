@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from '@/shared/hooks/useTranslations';
 import { IoLocation, IoSearch } from 'react-icons/io5';
-import { FaChevronDown } from 'react-icons/fa';
+import { IoChevronDown } from 'react-icons/io5';
 import styles from './LocationPicker.module.scss';
 
 interface LocationPickerProps {
@@ -56,7 +56,7 @@ export default function LocationPicker({
 
   const displayText =
     selectedLocations.length === 0
-      ? placeholder || t('lbl_select_location')
+      ? placeholder || t('lbl_all_locations')
       : selectedLocations.length === 1
       ? selectedLocations[0]
       : `${selectedLocations.length} ${t('lbl_location')}`;
@@ -74,7 +74,7 @@ export default function LocationPicker({
       >
         <IoLocation size={20} className={styles.locationIcon} />
         <span className={styles.text}>{displayText}</span>
-        <FaChevronDown size={16} className={styles.chevronIcon} />
+        <IoChevronDown size={16} className={styles.chevronIcon} />
       </button>
 
       {isOpen && (

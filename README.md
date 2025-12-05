@@ -10,72 +10,74 @@ pnpm dev
 
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-## Traducciones
+## Configurar Traducciones
 
-El proyecto soporta múltiples idiomas usando `next-intl`. Actualmente disponible en español (es) e inglés (en).
+### ¿Dónde están los textos traducidos?
 
-### Agregar un Nuevo Idioma
+Todos los textos que ves en el sitio web están guardados en archivos JSON dentro de la carpeta:
 
-1. **Agregar el código del idioma** en `src/shared/i18n/config.ts`:
-   ```typescript
-   export const locales = ['es', 'en', 'fr'] as const; // Agregar 'fr' para francés
-   ```
+```
+src/shared/i18n/messages/
+```
 
-2. **Crear archivo de traducciones** en `src/shared/i18n/messages/`:
-   ```bash
-   src/shared/i18n/messages/fr.json
-   ```
+Hay un archivo por cada idioma:
 
-3. **Copiar estructura** de `es.json` o `en.json` y traducir todos los valores:
+- `es.json` - Textos en español
+- `en.json` - Textos en inglés
+
+hay que crear los faltantes
+
+### ¿Cómo editar o traducir un texto?
+
+1. **Abre el archivo del idioma** que quieres editar (por ejemplo: `es.json`)
+
+2. **Busca el texto** que quieres cambiar. Los textos están organizados por secciones:
+
    ```json
    {
      "common": {
-       "welcome": "Bienvenue",
-       "loading": "Chargement..."
+       "welcome": "Bienvenido",
+       "loading": "Cargando..."
+     },
+     "home": {
+       "title": "Encuentra tu trabajo ideal"
      }
    }
    ```
 
-4. **Reiniciar el servidor**:
-   ```bash
-   pnpm dev
+3. **Cambia solo el valor** (lo que está después de los dos puntos `:`):
+
+   - Correcto: `"welcome": "Bienvenido a TomyJobs"`
+   - Incorrecto: Cambiar `"welcome"` por otro nombre
+
+4. **Guarda el archivo** y los cambios se verán automáticamente
+
+### Agregar un nuevo idioma (ejemplo: francés)
+
+1. **Copia el archivo** `es.json` y renómbralo a `fr.json`
+
+2. **Traduce todos los textos** en el archivo `fr.json`:
+
+   ```json
+   {
+     "common": {
+       "welcome": "Bienvenue",  ← Cambia esto
+       "loading": "Chargement..." ← Y esto
+     }
+   }
    ```
 
-### Usar Traducciones en Componentes
+3. **Abre el archivo** `src/shared/i18n/config.ts` y agrega `'fr'` a la lista:
 
-**Componente Cliente:**
-```tsx
-'use client';
-import { useTranslations } from 'next-intl';
+   ```typescript
+   export const locales = ["es", "en", "fr"] as const;
+   ```
 
-export default function MyComponent() {
-  const t = useTranslations('common');
-  return <button>{t('save')}</button>;
-}
-```
+4. **Reinicia el servidor** para ver los cambios
 
-**Componente Servidor:**
-```tsx
-import { useTranslations } from 'next-intl';
+### Reglas importantes
 
-export default async function MyComponent() {
-  const t = await useTranslations('common');
-  return <button>{t('save')}</button>;
-}
-```
-
-### Estructura de Archivos
-
-```
-src/
-├── shared/
-│   └── i18n/
-│       ├── config.ts          # Idiomas disponibles
-│       ├── request.ts          # Configuración next-intl
-│       └── messages/
-│           ├── es.json        # Español
-│           └── en.json        # Inglés
-└── middleware.ts               # Detecta idioma automáticamente
-```
-
-**Importante:** Mantén la misma estructura de claves en todos los archivos JSON. Solo cambia los valores traducidos.
+- **SÍ puedes cambiar**: Los textos después de los dos puntos (`"welcome": "Tu texto aquí"`)
+- **NO cambies**: Los nombres de las claves (`"welcome"`, `"loading"`, etc.)
+- **Mantén la misma estructura**: Todos los archivos de idioma deben tener las mismas claves
+- **Usa comillas dobles**: En JSON siempre usa `"texto"` no `'texto'`

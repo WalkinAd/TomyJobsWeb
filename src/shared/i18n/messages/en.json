@@ -35,7 +35,7 @@
     "lbl_days": "days",
     "lbl_search_by_location": "Search by location",
     "lbl_all_categories": "All categories",
-    "lbl_all_locations": "All locations",
+    "lbl_all_locations": "Locations",
     "lbl_select_category": "Select category",
     "lbl_select_location": "Select location"
   },
@@ -65,5 +65,32 @@
     "login_account": "Log in to your account",
     "partners": "Partners:",
     "copyright": "© 2025 TomyJobs. Free classifieds board"
+  },
+  "jobDetail": {
+    "lbl_premium": "Premium",
+    "lbl_views": "views",
+    "lbl_description": "Description",
+    "lbl_show_more": "Show more",
+    "lbl_show_less": "Show less",
+    "lbl_location": "Location",
+    "lbl_viewed_by": "Viewed by",
+    "lbl_people": "people",
+    "lbl_created_at": "Created at",
+    "lbl_edited_at": "Edited at",
+    "lbl_locator": "Locator",
+    "lbl_posted_by": "Posted by",
+    "lbl_company": "Company",
+    "lbl_user": "User",
+    "lbl_verified": "Verified",
+    "lbl_similar_jobs": "Similar jobs",
+    "lbl_call": "Call",
+    "lbl_message": "Message",
+    "lbl_professional_store": "Professional store",
+    "lbl_share_ad": "Share this ad",
+    "lbl_share_whatsapp": "Share with WhatsApp",
+    "lbl_copy_link": "Copy link",
+    "lbl_job_posted_by": "Posted by",
+    "lbl_report": "Report",
+    "lbl_people_also_search_for": "People also search for"
   }
 }

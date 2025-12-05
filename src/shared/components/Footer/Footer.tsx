@@ -5,10 +5,14 @@ import NavigationSection from './NavigationSection/NavigationSection';
  
 import styles from './Footer.module.scss';
 
-export default function Footer() {
+interface FooterProps {
+  showAppPromo?: boolean;
+}
+
+export default function Footer({ showAppPromo = true }: FooterProps) {
   return (
     <footer className={styles.footer}>
-      <AppPromoSection />
+      {showAppPromo && <AppPromoSection />}
       <NavigationSection />
     </footer>
   );

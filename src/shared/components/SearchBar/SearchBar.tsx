@@ -49,10 +49,7 @@ export default function SearchBar({
             />
           </div>
 
-          <div className={`${styles.divider} ${styles.dividerDesktop}`}></div>
-
           {categories.length > 0 && (
-            <>
               <div className={styles.filterDesktop}>
                 <CategoryPicker
                   categories={categories}
@@ -60,12 +57,9 @@ export default function SearchBar({
                   onSelect={onCategoryChange || (() => {})}
                 />
               </div>
-              <div className={`${styles.divider} ${styles.dividerDesktop}`}></div>
-            </>
           )}
 
           {locations.length > 0 && (
-            <>
               <div className={styles.filterDesktop}>
                 <LocationPicker
                   locations={locations}
@@ -73,8 +67,6 @@ export default function SearchBar({
                   onSelect={onLocationChange || (() => {})}
                 />
               </div>
-              <div className={`${styles.divider} ${styles.dividerDesktop}`}></div>
-            </>
           )}
 
           <button type="submit" className={`${styles.searchButton} flex-row items-center`}>

@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { Category } from '@/feature/jobs/types/category.types';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import styles from './CategorySlider.module.scss';
 
 interface CategorySliderProps {
@@ -64,7 +64,7 @@ export default function CategorySlider({
           onClick={() => scroll('left')}
           aria-label="Scroll left"
         >
-          <FaArrowLeft size={24} />
+          <FaChevronLeft size={20} />
         </button>
       )}
       
@@ -95,7 +95,7 @@ export default function CategorySlider({
           onClick={() => scroll('right')}
           aria-label="Scroll right"
         >
-          <FaArrowRight size={24} />
+          <FaChevronRight size={20} />
         </button>
       )}
     </div>

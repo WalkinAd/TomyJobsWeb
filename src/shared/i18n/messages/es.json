@@ -35,7 +35,7 @@
     "lbl_days": "días",
     "lbl_search_by_location": "Buscar por ubicación",
     "lbl_all_categories": "Todas las categorías",
-    "lbl_all_locations": "Todas las ubicaciones",
+    "lbl_all_locations": "Ubicaciones",
     "lbl_select_category": "Seleccionar categoría",
     "lbl_select_location": "Seleccionar ubicación"
   },
@@ -65,5 +65,32 @@
     "login_account": "Entra en tu cuenta",
     "partners": "Partners:",
     "copyright": "© 2025 TomyJobs. Tablón de anuncios gratis"
+  },
+  "jobDetail": {
+    "lbl_premium": "Premium",
+    "lbl_views": "vistas",
+    "lbl_description": "Descripción",
+    "lbl_show_more": "Ver más",
+    "lbl_show_less": "Ver menos",
+    "lbl_location": "Ubicación",
+    "lbl_viewed_by": "Visto por",
+    "lbl_people": "personas",
+    "lbl_created_at": "Creado en",
+    "lbl_edited_at": "Editado en",
+    "lbl_locator": "Localizador",
+    "lbl_posted_by": "Publicado por",
+    "lbl_company": "Empresa",
+    "lbl_user": "Usuario",
+    "lbl_verified": "Verificado",
+    "lbl_similar_jobs": "Trabajos similares",
+    "lbl_call": "Llamar",
+    "lbl_message": "Mensaje",
+    "lbl_professional_store": "Tienda profesional",
+    "lbl_share_ad": "Comparte este anuncio",
+    "lbl_share_whatsapp": "Compartir con WhatsApp",
+    "lbl_copy_link": "Copiar enlace",
+    "lbl_job_posted_by": "Publicado por",
+    "lbl_report": "Reportar",
+    "lbl_people_also_search_for": "La gente también busca"
   }
 }

@@ -1,0 +1,196 @@
+@use 'sass:map';
+@use 'sass:color';
+@use '../../../../shared/styles/variables' as *;
+@use '../../../../shared/styles/mixins' as *;
+
+.sidebar {
+  width: 100%;
+  min-height: 400px;
+}
+
+.sectionTitle {
+  font-family: $font-family;
+  @include font-size(base);
+  font-weight: map.get($font-weights, semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.publisherCard {
+  background: var(--color-white);
+  border: 1px solid color.change(map.get($colors, black), $alpha: 0.1);
+  @include border-radius(base);
+  transition: all 0.2s ease;
+
+  &.premium {
+    background: linear-gradient(
+      135deg,
+      map.get($colors, white) 0%,
+      color.change(map.get($colors, warning), $alpha: 0.2) 50%,
+      color.change(map.get($colors, warning), $alpha: 0.3) 100%
+    );
+  }
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  @include border-radius(full);
+  background: var(--scrollbar-track);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.avatarSkeleton {
+  width: 48px;
+  height: 48px;
+  @include border-radius(full);
+  flex-shrink: 0;
+}
+
+.nameSkeleton {
+  width: 120px;
+  height: 1.25rem;
+}
+
+.metaSkeleton {
+  width: 80px;
+  height: 1rem;
+  margin-top: map.get($spacing, xs);
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  @include border-radius(full);
+}
+
+.verifiedBadge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 18px;
+  height: 18px;
+  @include border-radius(full);
+  background: var(--color-white);
+  color: map.get($colors, primary);
+  border: 2px solid var(--color-white);
+}
+
+.name {
+  font-family: $font-family;
+  @include font-size(base);
+  font-weight: map.get($font-weights, semibold);
+  color: var(--text-primary);
+}
+
+.verifiedIcon {
+  color: map.get($colors, primary);
+  flex-shrink: 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: map.get($spacing, xs) map.get($spacing, s);
+  background: color.change(map.get($colors, primary), $alpha: 0.1);
+  color: map.get($colors, primary);
+  @include border-radius(sm);
+  font-family: $font-family;
+  @include font-size(xs);
+  font-weight: map.get($font-weights, medium);
+  width: fit-content;
+}
+
+.shareButton {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  @include border-radius(full);
+  background: map.get($colors, gray-300);
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: map.get($colors, gray-400);
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+
+  &::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: map.get($spacing, xs) map.get($spacing, s);
+    background: color.change(map.get($colors, black), $alpha: 0.9);
+    color: var(--color-white);
+    @include border-radius(sm);
+    font-family: $font-family;
+    @include font-size(xs);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: color.change(map.get($colors, black), $alpha: 0.9);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+  }
+
+  &:hover::before,
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
+.metaText {
+  font-family: $font-family;
+  @include font-size(sm);
+  color: var(--text-secondary);
+}
+
+.separator {
+  color: var(--text-tertiary);
+}
+
+.reportButton {
+  width: 100%;
+  height: 40px;
+  background: var(--color-white);
+  border: 1px solid map.get($colors, error);
+  color: map.get($colors, error);
+  @include border-radius(lg);
+  font-family: $font-family;
+  @include font-size(base);
+  font-weight: map.get($font-weights, semibold);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px color.change(map.get($colors, error), $alpha: 0.2);
+
+  &:hover {
+    background: color.change(map.get($colors, error), $alpha: 0.05);
+    box-shadow: 0 2px 8px color.change(map.get($colors, error), $alpha: 0.3);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
