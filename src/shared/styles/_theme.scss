@@ -10,6 +10,17 @@
   --primary-lighter: #{$flutter-blue-lighter};
   --primary-lightest: #{$flutter-blue-lightest};
   
+  --card-bg: #{map.get($colors, white)};
+  --card-border: #{map.get($colors, gray-200)};
+  --text-primary: #{map.get($colors, foreground)};
+  --text-secondary: #{map.get($colors, gray-600)};
+  --text-tertiary: #{map.get($colors, gray-500)};
+  --input-bg: #{map.get($colors, white)};
+  --input-border: #{map.get($colors, gray-300)};
+  --scrollbar-track: #{map.get($colors, gray-100)};
+  --scrollbar-thumb: #{map.get($colors, gray-400)};
+  --icon-filter: brightness(1) saturate(1);
+  
   @each $name, $value in $colors {
     --color-#{"" + $name}: #{$value};
   }
@@ -20,13 +31,6 @@
   
   @each $name, $value in $gap {
     --gap-#{$name}: #{$value};
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #{map.get($colors, background-dark)};
-    --foreground: #{map.get($colors, foreground-dark)};
   }
 }
 

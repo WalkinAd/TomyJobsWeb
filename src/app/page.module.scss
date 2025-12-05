@@ -1,0 +1,71 @@
+@use 'sass:map';
+@use '../shared/styles/variables' as *;
+@use '../shared/styles/mixins' as *;
+
+.contentWrapper {
+  padding-top: calc(map.get($spacing, m) * 2 + 2rem + map.get($spacing, xl));
+
+  @include respond-below(md) {
+    padding-top: calc(map.get($spacing, s) * 2 + 1.5rem + map.get($spacing, xl));
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 map.get($spacing, l);
+}
+
+.title {
+  font-family: $font-family;
+  @include font-size('3xl');
+  font-weight: map.get($font-weights, semibold);
+  text-align: center;
+  color: var(--text-primary);
+  margin-bottom: map.get($spacing, lg);
+}
+
+.sectionTitle {
+  font-family: $font-family;
+  @include font-size('2xl');
+  font-weight: map.get($font-weights, semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.sectionLink {
+  font-family: $font-family;
+  @include font-size(base);
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--primary-dark);
+  }
+}
+
+.categoriesSection {
+  margin-top: map.get($spacing, xl);
+  margin-bottom: map.get($spacing, xxl);
+}
+
+.jobsSection {
+  margin-top: map.get($spacing, xxl);
+}
+
+.jobsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 240px);
+  gap: map.get($gap, l);
+  justify-content: start;
+  margin-top: map.get($gap, l);
+}
+
+@include respond-below(md) {
+  .jobsGrid {
+    grid-template-columns: repeat(auto-fill, 240px);
+    gap: map.get($gap, m);
+  }
+}
+

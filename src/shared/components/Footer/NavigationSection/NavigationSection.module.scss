@@ -1,0 +1,86 @@
+@use 'sass:map';
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.navigationSection {
+  background: var(--color-gray-100);
+  padding: map.get($spacing, xxl) 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 map.get($spacing, l);
+}
+
+.navContent {
+  gap: map.get($gap, xl);
+}
+
+.logoColumn {
+  flex: 0 0 auto;
+}
+
+.logo {
+  @include font-size('3xl');
+  font-weight: map.get($font-weights, bold);
+  color: var(--primary);
+  margin: 0;
+}
+
+.rightColumns {
+  gap: map.get($gap, xl);
+  flex: 1;
+  min-width: 300px;
+}
+
+.navColumn {
+  flex: 1;
+  min-width: 180px;
+}
+
+.navTitle {
+  @include font-size(md);
+  font-weight: map.get($font-weights, semibold);
+  color: var(--text-primary);
+  margin: 0 0 map.get($spacing, m) 0;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: map.get($gap, s);
+}
+
+.navLink {
+  @include font-size(base);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+@include respond-below(lg) {
+  .rightColumns {
+    width: 100%;
+  }
+}
+
+@include respond-below(md) {
+  .container {
+    padding: 0 map.get($spacing, m);
+  }
+
+  .rightColumns {
+    gap: map.get($gap, l);
+  }
+
+  .navColumn {
+    min-width: 100%;
+  }
+}
+

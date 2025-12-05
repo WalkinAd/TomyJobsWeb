@@ -1,0 +1,176 @@
+@use 'sass:map';
+@use 'sass:color';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.jobCard {
+  position: relative;
+  width: 240px;
+  height: 280px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  @include border-radius(base);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px color.change(map.get($colors, black), $alpha: 0.1);
+
+  &:hover:not(.disabled) {
+    box-shadow: 0 4px 12px color.change(map.get($colors, black), $alpha: 0.2);
+    transform: translateY(-2px);
+  }
+
+  &.highlighted {
+    background: linear-gradient(135deg, map.get($colors, white) 0%, color.change(map.get($colors, warning), $alpha: 0.3) 50%, color.change(map.get($colors, warning), $alpha: 0.5) 100%);
+    box-shadow: 0 2px 8px color.change(map.get($colors, warning), $alpha: 0.3);
+  }
+
+  &.disabled {
+    background: var(--scrollbar-track);
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 160px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--scrollbar-track);
+}
+
+.verified {
+  position: absolute;
+  top: map.get($spacing, s);
+  left: map.get($spacing, s);
+  padding: map.get($spacing, xs) map.get($spacing, s);
+  background: var(--color-success);
+  color: var(--color-white);
+  @include border-radius(sm);
+  font-family: $font-family;
+  @include font-size(xs);
+  font-weight: map.get($font-weights, semibold);
+  z-index: 10;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.viewsBadge {
+  position: absolute;
+  top: map.get($spacing, lg);
+  left: map.get($spacing, s);
+  padding: map.get($spacing, xs) map.get($spacing, s);
+  background: color.change(map.get($colors, primary), $alpha: 0.9);
+  @include border-radius(sm);
+  font-family: $font-family;
+  @include font-size(xs);
+  font-weight: map.get($font-weights, semibold);
+  color: var(--color-white);
+  z-index: 10;
+}
+
+.favoriteButton {
+  position: absolute;
+  top: map.get($spacing, s);
+  right: map.get($spacing, s);
+  width: 32px;
+  height: 32px;
+  @include border-radius(full);
+  background: color.change(map.get($colors, white), $alpha: 0.9);
+  border: 1px solid color.change(map.get($colors, black), $alpha: 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 11;
+  padding: 0;
+
+  &:hover {
+    background: var(--color-white);
+    transform: scale(1.1);
+  }
+}
+
+.favoriteIcon {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+  
+  .favoriteButton:hover & {
+    color: var(--primary);
+  }
+}
+
+.favoriteButton.favoriteActive .favoriteIcon {
+  color: var(--primary);
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+}
+
+.title {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  font-family: $font-family;
+  @include font-size(md);
+  font-weight: map.get($font-weights, semibold);
+  color: var(--text-primary);
+  margin: 0;
+  line-height: map.get($line-heights, tight);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+.locationIcon {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.location {
+  font-family: $font-family;
+  @include font-size(sm);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.hiringType {
+  display: inline-flex;
+  padding: map.get($spacing, xs) map.get($spacing, s);
+  background: color.change(map.get($colors, warning), $alpha: 0.5);
+  color: var(--text-primary);
+  @include border-radius(sm);
+  font-family: $font-family;
+  @include font-size(xs);
+  font-weight: map.get($font-weights, semibold);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.date {
+  font-family: $font-family;
+  @include font-size(xs);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.daysLeft {
+  color: var(--primary);
+  font-weight: map.get($font-weights, semibold);
+}

@@ -237,3 +237,27 @@
   }
 }
 
+@each $name, $sizes in $font-sizes {
+  .text-#{$name} {
+    @include font-size($name);
+  }
+}
+
+@each $name, $value in $font-weights {
+  .font-#{$name} {
+    font-weight: $value;
+  }
+}
+
+@each $name, $value in $line-heights {
+  .leading-#{$name} {
+    line-height: $value;
+  }
+}
+
+@each $name, $value in $border-radius {
+  .rounded-#{$name} {
+    @include border-radius($name);
+  }
+}
+

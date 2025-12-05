@@ -1,0 +1,238 @@
+@use 'sass:map';
+@use 'sass:color';
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.topSection {
+  background: color.change(map.get($colors, primary), $alpha: 0.08);
+  padding: map.get($spacing, xxl) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.wavyLines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.wavyLine1,
+.wavyLine2 {
+  position: absolute;
+  width: 120%;
+  height: 120px;
+  color: color.change(map.get($colors, primary), $alpha: 0.2);
+  pointer-events: none;
+}
+
+.wavyLine1 {
+  top: -60px;
+  left: 0;
+  transform: rotate(0deg);
+}
+
+.wavyLine2 {
+  bottom: -60px;
+  right: 0;
+  transform: rotate(0deg);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 map.get($spacing, l);
+  position: relative;
+  z-index: 1;
+}
+
+.appPromoContent {
+  gap: map.get($gap, xl);
+}
+
+.leftSection {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.downloadTitle {
+  @include font-size('2xl');
+  font-weight: map.get($font-weights, bold);
+  color: var(--text-primary);
+  margin: 0 0 map.get($spacing, m) 0;
+}
+
+.downloadDescription {
+  @include font-size(base);
+  color: var(--text-secondary);
+  margin: 0 0 map.get($spacing, l) 0;
+  line-height: map.get($line-heights, normal);
+}
+
+.downloadButtons {
+  gap: map.get($gap, m);
+  margin-bottom: map.get($spacing, l);
+}
+
+.downloadButton {
+  background: var(--color-black);
+  color: var(--color-white);
+  padding: map.get($spacing, s) map.get($spacing, m);
+  @include border-radius(sm);
+  gap: map.get($gap, xs);
+  min-width: 140px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.downloadLabel {
+  @include font-size(xs);
+  font-weight: map.get($font-weights, medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.storeLogo {
+  @include font-size(sm);
+  font-weight: map.get($font-weights, semibold);
+}
+
+.storeIcon {
+  color: var(--color-white);
+  flex-shrink: 0;
+}
+
+.socialLinks {
+  gap: map.get($gap, m);
+  margin-top: map.get($spacing, m);
+}
+
+.socialLink {
+  color: var(--text-tertiary);
+  transition: color 0.2s;
+  width: 32px;
+  height: 32px;
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+.centerSection {
+  flex: 0 0 auto;
+}
+
+.qrCard {
+  background: var(--color-white);
+  padding: map.get($spacing, l);
+  @include border-radius(md);
+  box-shadow: 0 4px 12px color.change(map.get($colors, black), $alpha: 0.1);
+  gap: map.get($gap, m);
+  min-width: 200px;
+}
+
+.qrText {
+  @include font-size(sm);
+  color: var(--text-primary);
+  margin: 0;
+  font-style: italic;
+  text-align: center;
+}
+
+.qrCode {
+  width: 120px;
+  height: 120px;
+  background: var(--color-white);
+  border: 2px solid var(--input-border);
+  @include border-radius(sm);
+  color: var(--text-tertiary);
+  @include font-size(xs);
+}
+
+.rightSection {
+  flex: 0 0 auto;
+}
+
+.phoneMockup {
+  width: 200px;
+  height: 400px;
+  background: var(--color-white);
+  border: 8px solid var(--color-black);
+  @include border-radius(xl);
+  box-shadow: 0 8px 24px color.change(map.get($colors, black), $alpha: 0.2);
+  color: var(--text-tertiary);
+  @include font-size(sm);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color.change(map.get($colors, primary), $alpha: 0.1);
+    background-image: url('/placeholder-app.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  span {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@include respond-below(lg) {
+  .leftSection {
+    max-width: 100%;
+  }
+
+  .centerSection,
+  .rightSection {
+    width: 100%;
+  }
+}
+
+@include respond-below(md) {
+  .topSection {
+    padding: map.get($spacing, xl) 0;
+  }
+
+  .container {
+    padding: 0 map.get($spacing, m);
+  }
+
+  .downloadTitle {
+    @include font-size(xl);
+  }
+
+  .downloadButtons {
+    width: 100%;
+  }
+
+  .downloadButton {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .phoneMockup {
+    width: 150px;
+    height: 300px;
+  }
+
+  .qrCard {
+    min-width: 180px;
+  }
+
+  .qrCode {
+    width: 100px;
+    height: 100px;
+  }
+}
+

@@ -1,0 +1,64 @@
+@use 'sass:map';
+@use 'sass:color';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.categoryList {
+  overflow-x: auto;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 3px;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.categoryItem {
+  width: 97px;
+  height: 102px;
+  background: transparent;
+  border: 1px solid color.change(map.get($colors, black), $alpha: 0.08);
+  @include border-radius(base);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--primary);
+    background: var(--primary-lightest);
+  }
+
+  &.active {
+    border-color: var(--primary);
+    background: var(--primary-lightest);
+  }
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: var(--icon-filter);
+  transition: filter 0.2s ease;
+}
+
+.name {
+  font-family: $font-family;
+  @include font-size(sm);
+  font-weight: map.get($font-weights, medium);
+  color: var(--text-primary);
+  text-align: center;
+}
+

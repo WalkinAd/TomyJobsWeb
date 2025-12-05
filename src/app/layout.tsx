@@ -1,6 +1,9 @@
 'use client';
 
 import { Inter } from "next/font/google";
+import { Provider } from 'react-redux';
+import { store } from "@/shared/store/store";
+import { StoreProvider } from "@/shared/store/StoreProvider";
 import "../shared/styles/globals.scss";
 
 const inter = Inter({
@@ -11,18 +14,23 @@ const inter = Inter({
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <head>
         <title>TomyJobs - Encuentra tu trabajo ideal</title>
         <meta name="description" content="Plataforma para encontrar y publicar trabajos" />
       </head>
       <body className={inter.variable}>
-        {children}
+        <Provider store={store}>
+          <StoreProvider>
+            {children}
+          </StoreProvider>
+        </Provider>
       </body>
     </html>
   );
 }
+

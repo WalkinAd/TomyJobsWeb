@@ -1,0 +1,69 @@
+{
+  "common": {
+    "welcome": "Bienvenido",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "search": "Buscar",
+    "submit": "Enviar",
+    "clear": "Limpiar"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "jobs": "Trabajos",
+    "plans": "Planes",
+    "chat": "Chat",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión"
+  },
+  "home": {
+    "msg_find_your_dream2": "Encuentra tu trabajo soñado",
+    "lbl_search": "Buscar",
+    "lbl_location": "Ubicación",
+    "lbl_top_jobs": "Trabajos principales",
+    "lbl_recent_jobs": "Trabajos recientes",
+    "lbl_recommendation": "Recomendación",
+    "lbl_categories": "Categorías",
+    "msg_hi_welcome_back": "¡Hola, bienvenido de nuevo!",
+    "lbl_no_jobs": "No hay trabajos",
+    "lbl_verified": "Verificada",
+    "lbl_daysleft": "Días restantes",
+    "lbl_days": "días",
+    "lbl_search_by_location": "Buscar por ubicación",
+    "lbl_all_categories": "Todas las categorías",
+    "lbl_all_locations": "Todas las ubicaciones",
+    "lbl_select_category": "Seleccionar categoría",
+    "lbl_select_location": "Seleccionar ubicación"
+  },
+  "app": {
+    "name": "TomyJobs",
+    "title": "TomyJobs - Encuentra tu trabajo ideal"
+  },
+  "footer": {
+    "download_app": "Descarga ya la app de TomyJobs",
+    "download_description": "Encuentra tu trabajo soñado en menos de 1 minuto mas rapido y facil que nunca desde tu celular.",
+    "scan_qr": "Escanea el código y ¡listo!",
+    "available_google_play": "DISPONIBLE EN",
+    "available_app_store": "Disponible en",
+    "need_help": "¿Necesitas ayuda?",
+    "contact": "Contactar",
+    "terms": "Condiciones de uso",
+    "privacy": "Política de privacidad",
+    "cookies": "Política de cookies",
+    "manage_cookies": "Gestionar cookies",
+    "security": "Seguridad",
+    "about": "Sobre TomyJobs",
+    "blog": "Nuestro Blog",
+    "press": "Sala de prensa",
+    "work_with_us": "Trabaja con nosotros",
+    "for_professionals": "Para profesionales",
+    "pro": "TomyJobs Pro",
+    "login_account": "Entra en tu cuenta",
+    "partners": "Partners:",
+    "copyright": "© 2025 TomyJobs. Tablón de anuncios gratis"
+  }
+}

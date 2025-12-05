@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TomyJobs Web
 
-## Getting Started
+Plataforma web para encontrar y publicar trabajos.
 
-First, run the development server:
+## Inicio Rápido
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Traducciones
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+El proyecto soporta múltiples idiomas usando `next-intl`. Actualmente disponible en español (es) e inglés (en).
 
-## Learn More
+### Agregar un Nuevo Idioma
 
-To learn more about Next.js, take a look at the following resources:
+1. **Agregar el código del idioma** en `src/shared/i18n/config.ts`:
+   ```typescript
+   export const locales = ['es', 'en', 'fr'] as const; // Agregar 'fr' para francés
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Crear archivo de traducciones** en `src/shared/i18n/messages/`:
+   ```bash
+   src/shared/i18n/messages/fr.json
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Copiar estructura** de `es.json` o `en.json` y traducir todos los valores:
+   ```json
+   {
+     "common": {
+       "welcome": "Bienvenue",
+       "loading": "Chargement..."
+     }
+   }
+   ```
 
-## Deploy on Vercel
+4. **Reiniciar el servidor**:
+   ```bash
+   pnpm dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Usar Traducciones en Componentes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Componente Cliente:**
+```tsx
+'use client';
+import { useTranslations } from 'next-intl';
+
+export default function MyComponent() {
+  const t = useTranslations('common');
+  return <button>{t('save')}</button>;
+}
+```
+
+**Componente Servidor:**
+```tsx
+import { useTranslations } from 'next-intl';
+
+export default async function MyComponent() {
+  const t = await useTranslations('common');
+  return <button>{t('save')}</button>;
+}
+```
+
+### Estructura de Archivos
+
+```
+src/
+├── shared/
+│   └── i18n/
+│       ├── config.ts          # Idiomas disponibles
+│       ├── request.ts          # Configuración next-intl
+│       └── messages/
+│           ├── es.json        # Español
+│           └── en.json        # Inglés
+└── middleware.ts               # Detecta idioma automáticamente
+```
+
+**Importante:** Mantén la misma estructura de claves en todos los archivos JSON. Solo cambia los valores traducidos.

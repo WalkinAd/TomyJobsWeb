@@ -1,25 +1,96 @@
 import { initializeApp, getApps, FirebaseApp } from "firebase/app";
 import { getAnalytics, Analytics } from "firebase/analytics";
+import { getFirestore, Firestore } from "firebase/firestore";
+import { FIREBASE_DATABASE } from "../constants/firebase.constants";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCawwEPnQ4QSVoC423nQlL2znKbodamgks",
-  authDomain: "to-my-jobs.firebaseapp.com",
-  projectId: "to-my-jobs",
-  storageBucket: "to-my-jobs.appspot.com",
-  messagingSenderId: "540166116804",
-  appId: "1:540166116804:web:31d50716a90a57a994c091",
-  measurementId: "G-7S34CKBGST"
+const getFirebaseConfig = () => {
+  const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+  const authDomain = process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN;
+  const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+  const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+  const messagingSenderId =
+    process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID;
+  const appId = process.env.NEXT_PUBLIC_FIREBASE_APP_ID;
+  const measurementId = process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID;
+
+  if (
+    !apiKey ||
+    !authDomain ||
+    !projectId ||
+    !storageBucket ||
+    !messagingSenderId ||
+    !appId
+  ) {
+    throw new Error(
+      "faltan variables de entorno de firebase. revisa tu archivo .env.local"
+    );
+  }
+
+  return {
+    apiKey,
+    authDomain,
+    projectId,
+    storageBucket,
+    messagingSenderId,
+    appId,
+    measurementId,
+  };
 };
 
-let app: FirebaseApp;
-let analytics: Analytics | null = null;
+const firebaseConfig = getFirebaseConfig();
 
-if (typeof window !== "undefined") {
-  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-  analytics = getAnalytics(app);
-} else {
-  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-}
+const getDatabaseId = (): string => {
+  const envDbId = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID;
+  if (
+    envDbId === FIREBASE_DATABASE.PROD ||
+    envDbId === FIREBASE_DATABASE.DEFAULT
+  ) {
+    return envDbId;
+  }
+  return FIREBASE_DATABASE.DEFAULT;
+};
 
-export { app, analytics };
+let appInstance: FirebaseApp | null = null;
+let analyticsInstance: Analytics | null = null;
+let dbInstance: Firestore | null = null;
 
+const getApp = (): FirebaseApp => {
+  if (typeof window === "undefined") {
+    if (!appInstance) {
+      appInstance =
+        getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+    }
+    return appInstance;
+  }
+
+  if (!appInstance) {
+    appInstance =
+      getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+  }
+  return appInstance;
+};
+
+const getDb = (): Firestore => {
+  if (!dbInstance) {
+    const app = getApp();
+    const databaseId = getDatabaseId();
+    dbInstance = getFirestore(app, databaseId);
+  }
+  return dbInstance;
+};
+
+const getAnalyticsInstance = (): Analytics | null => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  if (!analyticsInstance && firebaseConfig.measurementId) {
+    const app = getApp();
+    analyticsInstance = getAnalytics(app);
+  }
+  return analyticsInstance;
+};
+
+export const app = getApp();
+export const analytics = getAnalyticsInstance();
+export const db = getDb();

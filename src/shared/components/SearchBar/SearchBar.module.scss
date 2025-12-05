@@ -1,0 +1,206 @@
+@use 'sass:map';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.searchBar {
+  width: 100%;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 900px;
+}
+
+.searchContainer {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  @include border-radius(pill);
+  overflow: visible;
+  min-height: 56px;
+  padding: 0;
+  width: 100%;
+  position: relative;
+  gap: 0;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 0 map.get($spacing, l);
+  min-height: 56px;
+  min-width: 0;
+}
+
+.searchIcon {
+  color: var(--text-tertiary);
+  margin-right: map.get($gap, s);
+  flex-shrink: 0;
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: $font-family;
+  @include font-size(md);
+  color: var(--text-primary);
+  min-width: 0;
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+}
+
+.divider {
+  width: 1px;
+  height: 32px;
+  background: var(--input-border);
+  flex-shrink: 0;
+}
+
+.dropdownButton {
+  gap: map.get($gap, m);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0 map.get($spacing, l);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: $font-family;
+  @include font-size(base);
+  color: var(--text-primary);
+  white-space: nowrap;
+  min-height: 56px;
+
+  &:hover {
+    background: var(--primary-lightest);
+  }
+
+  span {
+    flex: 1;
+  }
+}
+
+:global(.categoryPicker),
+:global(.locationPicker) {
+  min-height: 56px;
+  flex-shrink: 0;
+}
+
+.filterIcon,
+.locationIcon {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.chevronIcon {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.searchButton {
+  gap: map.get($gap, s);
+  background: var(--primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: 0 9999px 9999px 0;
+  padding: 0 map.get($spacing, lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: $font-family;
+  @include font-size(md);
+  font-weight: map.get($font-weights, medium);
+  white-space: nowrap;
+  min-height: 56px;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--primary-dark);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.searchButtonIcon {
+  color: var(--color-white);
+  flex-shrink: 0;
+}
+
+.filtersContainer {
+  gap: map.get($gap, s);
+}
+
+.filterDesktop {
+}
+
+.dividerDesktop {
+  display: block;
+}
+
+ 
+@include respond-to(lg) {
+  .searchContainer {
+    flex: 1;
+  }
+
+  .filtersContainer {
+    display: none;
+  }
+
+  .dividerDesktop {
+    display: block;
+  }
+}
+ 
+@include respond-below(lg) {
+  .searchContainer {
+    min-height: 48px;
+  }
+
+  .searchInput {
+    padding: 0 map.get($spacing, s);
+    min-height: 48px;
+  }
+
+  .input {
+    @include font-size(base);
+  }
+
+  .searchIcon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .dividerDesktop {
+    display: none;
+  }
+
+  .filterDesktop {
+    display: none;
+  }
+
+  .searchButton {
+    min-height: 48px;
+    padding: 0 map.get($spacing, m);
+    border-radius: 0 9999px 9999px 0;
+    
+    span {
+      display: none;
+    }
+  }
+
+ 
+  .filtersContainer {
+    :global(.categoryPicker),
+    :global(.locationPicker) {
+      min-height: 44px;
+      
+      :global(.trigger) {
+        padding: 0 map.get($spacing, m);
+        @include font-size(sm);
+      }
+    }
+  }
+}

@@ -1,0 +1,134 @@
+@use 'sass:map';
+@use 'sass:color';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.locationPicker {
+  position: relative;
+  z-index: 10;
+}
+
+.trigger {
+  gap: map.get($gap, s);
+  padding: 0 map.get($spacing, l);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-primary);
+  @include font-size(base);
+  white-space: nowrap;
+  min-height: 56px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--primary-lightest);
+  }
+}
+
+.locationIcon {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
+}
+
+.chevronIcon {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+  transition: transform 0.2s;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + map.get($spacing, s));
+  left: 0;
+  min-width: 300px;
+  max-width: 400px;
+  max-height: 400px;
+  background: var(--color-white);
+  @include border-radius(md);
+  box-shadow: 0 4px 12px color.change(map.get($colors, black), $alpha: 0.15);
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.searchContainer {
+  gap: map.get($gap, s);
+  padding: map.get($spacing, m);
+  border-bottom: 1px solid color.change(map.get($colors, black), $alpha: 0.1);
+}
+
+.searchIcon {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  @include font-size(base);
+  color: var(--text-primary);
+  background: transparent;
+
+  &::placeholder {
+    color: var(--text-secondary);
+  }
+}
+
+.clearButton {
+  padding: map.get($spacing, xs) map.get($spacing, s);
+  border: none;
+  background: transparent;
+  color: var(--color-primary);
+  @include font-size(sm);
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.list {
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.item {
+  gap: map.get($gap, s);
+  padding: map.get($spacing, m);
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: color.change(map.get($colors, primary), $alpha: 0.05);
+  }
+
+  &.selected {
+    background: color.change(map.get($colors, primary), $alpha: 0.1);
+  }
+}
+
+.checkbox {
+  cursor: pointer;
+}
+
+.itemText {
+  flex: 1;
+  @include font-size(base);
+  color: var(--text-primary);
+}
+
+.empty {
+  padding: map.get($spacing, xl);
+  text-align: center;
+  color: var(--text-secondary);
+  @include font-size(base);
+}
+

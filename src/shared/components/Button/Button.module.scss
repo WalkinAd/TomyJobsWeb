@@ -1,0 +1,62 @@
+@use 'sass:map';
+@use 'sass:color';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.button {
+  border: none;
+  cursor: pointer;
+  padding: map.get($spacing, s) map.get($spacing, lg);
+  @include border-radius(lg);
+  font-family: $font-family;
+  @include font-size(md);
+  font-weight: map.get($font-weights, medium);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  gap: map.get($gap, s);
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &.primary {
+    background-color: map.get($colors, primary);
+    color: map.get($colors, white);
+
+    &:hover:not(:disabled) {
+      background-color: map.get($colors, primary-dark);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+
+  &.outlined {
+    background-color: transparent;
+    color: map.get($colors, primary);
+    border: 2px solid map.get($colors, primary);
+
+    &:hover:not(:disabled) {
+      background-color: map.get($colors, primary-lightest);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+
+  &.error {
+    background-color: map.get($colors, error);
+    color: map.get($colors, white);
+
+    &:hover:not(:disabled) {
+      background-color: color.adjust(map.get($colors, error), $lightness: -10%);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+}

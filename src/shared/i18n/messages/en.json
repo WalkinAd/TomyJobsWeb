@@ -1,0 +1,69 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "submit": "Submit",
+    "clear": "Clear"
+  },
+  "navigation": {
+    "home": "Home",
+    "jobs": "Jobs",
+    "plans": "Plans",
+    "chat": "Chat",
+    "login": "Log in",
+    "logout": "Log out"
+  },
+  "home": {
+    "msg_find_your_dream2": "Find your dream job",
+    "lbl_search": "Search",
+    "lbl_location": "Location",
+    "lbl_top_jobs": "Top Jobs",
+    "lbl_recent_jobs": "Recent Jobs",
+    "lbl_recommendation": "Recommendation",
+    "lbl_categories": "Categories",
+    "msg_hi_welcome_back": "Hi, welcome back!",
+    "lbl_no_jobs": "No Jobs",
+    "lbl_verified": "Verified",
+    "lbl_daysleft": "Days left",
+    "lbl_days": "days",
+    "lbl_search_by_location": "Search by location",
+    "lbl_all_categories": "All categories",
+    "lbl_all_locations": "All locations",
+    "lbl_select_category": "Select category",
+    "lbl_select_location": "Select location"
+  },
+  "app": {
+    "name": "TomyJobs",
+    "title": "TomyJobs - Find your ideal job"
+  },
+  "footer": {
+    "download_app": "Download the TomyJobs app now",
+    "download_description": "Find your dream job in less than 1 minute, faster and easier than ever from your phone.",
+    "scan_qr": "Scan the code and it's done!",
+    "available_google_play": "AVAILABLE ON",
+    "available_app_store": "Available on",
+    "need_help": "Do you need help?",
+    "contact": "Contact",
+    "terms": "Terms of use",
+    "privacy": "Privacy policy",
+    "cookies": "Cookie policy",
+    "manage_cookies": "Manage cookies",
+    "security": "Security",
+    "about": "About TomyJobs",
+    "blog": "Our Blog",
+    "press": "Press room",
+    "work_with_us": "Work with us",
+    "for_professionals": "For professionals",
+    "pro": "TomyJobs Pro",
+    "login_account": "Log in to your account",
+    "partners": "Partners:",
+    "copyright": "© 2025 TomyJobs. Free classifieds board"
+  }
+}

@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:meta';
 @use 'variables' as *;
 
 @mixin respond-to($breakpoint) {
@@ -22,6 +23,65 @@
       @media (max-width: $max-width) {
         @content;
       }
+    }
+  }
+}
+
+@mixin fade-in($duration: 0.3s) {
+  animation: fadeIn $duration ease-in-out;
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@mixin fade-out($duration: 0.3s) {
+  animation: fadeOut $duration ease-in-out;
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+@mixin font-size($size) {
+  @if map.has-key($font-sizes, $size) {
+    $sizes: map.get($font-sizes, $size);
+    $mobile: map.get($sizes, mobile);
+    $desktop: map.get($sizes, desktop);
+    
+    font-size: $mobile;
+    
+    @include respond-to(md) {
+      font-size: $desktop;
+    }
+  }
+}
+
+@mixin border-radius($size) {
+  @if map.has-key($border-radius, $size) {
+    $value: map.get($border-radius, $size);
+    
+    @if meta.type-of($value) == map {
+      $mobile: map.get($value, mobile);
+      $desktop: map.get($value, desktop);
+      
+      border-radius: $mobile;
+      
+      @include respond-to(md) {
+        border-radius: $desktop;
+      }
+    } @else {
+      border-radius: $value;
     }
   }
 }

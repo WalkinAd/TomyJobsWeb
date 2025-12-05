@@ -1,0 +1,8 @@
+@use 'sass:map';
+@use '../../styles/variables' as *;
+
+.footer {
+  width: 100%;
+  background: var(--background);
+  margin-top: map.get($spacing, xxl);
+}

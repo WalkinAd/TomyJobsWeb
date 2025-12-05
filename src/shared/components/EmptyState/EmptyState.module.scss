@@ -1,0 +1,22 @@
+@use 'sass:map';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.emptyState {
+  padding: map.get($spacing, xxl);
+  text-align: center;
+  gap: map.get($gap, l);
+}
+
+.icon {
+  color: var(--text-tertiary);
+  opacity: 0.5;
+}
+
+.text {
+  @include font-size(lg);
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 400px;
+}
+
