@@ -48,6 +48,8 @@ export default function JobDetailPage() {
   const [locator, setLocator] = useState<string | null>(null);
   const [categorySlug, setCategorySlug] = useState<string>(categoria);
   const [subCategorySlug, setSubCategorySlug] = useState<string | undefined>(subCategoriaFromUrl);
+  const [categoryName, setCategoryName] = useState<string | undefined>(undefined);
+  const [subCategoryName, setSubCategoryName] = useState<string | undefined>(undefined);
 
   const parsedSlug = slug ? parseJobSlug(slug) : null;
   const extractedLocator = parsedSlug?.locator || null;
@@ -102,6 +104,7 @@ export default function JobDetailPage() {
         const category = allCategories.find((cat) => cat.docId === jobData.catId);
         if (category) {
           finalCategorySlug = slugify(category.name);
+          setCategoryName(category.name);
         }
       }
       
@@ -109,6 +112,7 @@ export default function JobDetailPage() {
         const subCategory = allCategories.find((cat) => cat.docId === jobData.subCatId);
         if (subCategory) {
           finalSubCategorySlug = slugify(subCategory.name);
+          setSubCategoryName(subCategory.name);
         }
       }
       
@@ -222,7 +226,7 @@ export default function JobDetailPage() {
           <div className={`flex-row items-start ${styles.columnsLayout}`} style={{ gap: '12px' }}>
             <div className={styles.leftColumn}>
               <ImageCarousel images={job.banner || []} title={job.title || ''} />
-              <JobDetailContent job={job} />
+              <JobDetailContent job={job} categoryName={categoryName} subCategoryName={subCategoryName} />
             </div>
             <div className={styles.rightColumn}>
               <JobPublisherInfo job={job} categorySlug={categorySlug} subCategorySlug={subCategorySlug} />

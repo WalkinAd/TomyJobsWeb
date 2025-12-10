@@ -11,9 +11,11 @@ import Button from '@/shared/components/Button/Button';
 
 interface JobDetailContentProps {
   job: Job;
+  categoryName?: string;
+  subCategoryName?: string;
 }
 
-export default function JobDetailContent({ job }: JobDetailContentProps) {
+export default function JobDetailContent({ job, categoryName, subCategoryName }: JobDetailContentProps) {
   const t = useTranslations('jobDetail');
   const [isFavorite, setIsFavorite] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -68,6 +70,11 @@ export default function JobDetailContent({ job }: JobDetailContentProps) {
             <span>{job.location}</span>
           </div>
         )}
+        {job.locator && (
+          <div className="flex-row items-center gap-xs">
+            <span>{t('lbl_locator')}: {job.locator}</span>
+          </div>
+        )}
         {viewsCount > 0 && (
           <div className="flex-row items-center gap-xs">
             <IoEyeOutline size={16} />
@@ -107,6 +114,15 @@ export default function JobDetailContent({ job }: JobDetailContentProps) {
       </div>
 
       <div className="flex-col gap-s">
+        {categoryName && (
+          <div className="flex-row items-start gap-s">
+            <span className={styles.detailLabel}>{t('lbl_category')}:</span>
+            <span>
+              {categoryName}
+              {subCategoryName && ` / ${subCategoryName}`}
+            </span>
+          </div>
+        )}
         {job.location && (
           <div className="flex-row items-start gap-s">
             <span className={styles.detailLabel}>{t('lbl_location')}:</span>
@@ -131,6 +147,36 @@ export default function JobDetailContent({ job }: JobDetailContentProps) {
           <div className="flex-row items-start gap-s">
             <span className={styles.detailLabel}>{t('lbl_locator')}:</span>
             <span>{job.locator}</span>
+          </div>
+        )}
+        {job.hiringType && (
+          <div className="flex-row items-start gap-s">
+            <span className={styles.detailLabel}>{t('lbl_hiring_type')}:</span>
+            <span>{job.hiringType}</span>
+          </div>
+        )}
+        {job.responseTime && (
+          <div className="flex-row items-start gap-s">
+            <span className={styles.detailLabel}>{t('lbl_response_time')}:</span>
+            <span>{job.responseTime}</span>
+          </div>
+        )}
+        {job.expireTimestamp && (
+          <div className="flex-row items-start gap-s">
+            <span className={styles.detailLabel}>{t('lbl_expires_at')}:</span>
+            <span>{formatJobDate(new Date(job.expireTimestamp))}</span>
+          </div>
+        )}
+        {job.isNumberPublicly && job.mobileNumber && (
+          <div className="flex-row items-start gap-s">
+            <span className={styles.detailLabel}>{t('lbl_mobile_number')}:</span>
+            <span>{job.mobileNumber}</span>
+          </div>
+        )}
+        {job.status && (
+          <div className="flex-row items-start gap-s">
+            <span className={styles.detailLabel}>{t('lbl_status')}:</span>
+            <span>{job.status}</span>
           </div>
         )}
         {job.editedTimestamp && (
