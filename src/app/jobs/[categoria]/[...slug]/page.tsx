@@ -31,18 +31,11 @@ export default function JobDetailPage() {
   let jobSlugFromUrl: string = '';
   
   if (slugArray && slugArray.length > 0) {
-    const firstItem = slugArray[0];
-    const hasJobId = firstItem.includes('&');
-    
-    if (hasJobId) {
-      jobSlugFromUrl = slugArray.join('/');
+    if (slugArray.length > 1) {
+      subCategoriaFromUrl = decodeURIComponent(slugArray[0]);
+      jobSlugFromUrl = slugArray.slice(1).join('/');
     } else {
-      if (slugArray.length > 1) {
-        subCategoriaFromUrl = decodeURIComponent(firstItem);
-        jobSlugFromUrl = slugArray.slice(1).join('/');
-      } else {
-        jobSlugFromUrl = firstItem;
-      }
+      jobSlugFromUrl = slugArray.join('/');
     }
   }
   
@@ -52,47 +45,48 @@ export default function JobDetailPage() {
   const [loading, setLoading] = useState(true);
   const [similarJobs, setSimilarJobs] = useState<Job[]>([]);
   const [peopleAlsoSearchFor, setPeopleAlsoSearchFor] = useState<Job[]>([]);
-  const [jobId, setJobId] = useState<string | null>(null);
+  const [locator, setLocator] = useState<string | null>(null);
   const [categorySlug, setCategorySlug] = useState<string>(categoria);
   const [subCategorySlug, setSubCategorySlug] = useState<string | undefined>(subCategoriaFromUrl);
 
   const parsedSlug = slug ? parseJobSlug(slug) : null;
-  const extractedJobId = parsedSlug?.jobId || null;
+  const extractedLocator = parsedSlug?.locator || null;
   const [deepLinkUrl, setDeepLinkUrl] = useState<string | undefined>(undefined);
   const [shouldTryDeepLink, setShouldTryDeepLink] = useState(false);
+  const [jobIdForDeepLink, setJobIdForDeepLink] = useState<string>('');
 
   const { shouldShowWeb } = useDeepLink({
-    jobId: extractedJobId || '',
+    jobId: jobIdForDeepLink,
     url: deepLinkUrl,
     enabled: shouldTryDeepLink,
   });
 
   useEffect(() => {
-    if (extractedJobId) {
-      setJobId(extractedJobId);
+    if (extractedLocator) {
+      setLocator(extractedLocator);
     }
-  }, [extractedJobId]);
+  }, [extractedLocator]);
 
   useEffect(() => {
-    if (jobId && shouldShowWeb) {
+    if (locator && shouldShowWeb) {
       loadJob();
     }
-  }, [jobId, shouldShowWeb]);
+  }, [locator, shouldShowWeb]);
 
   useEffect(() => {
-    if (!extractedJobId && slug && shouldShowWeb) {
+    if (!extractedLocator && slug && shouldShowWeb) {
       setTimeout(() => {
         router.push('/');
       }, 1000);
     }
-  }, [extractedJobId, slug, shouldShowWeb, router]);
+  }, [extractedLocator, slug, shouldShowWeb, router]);
 
   const loadJob = async () => {
-    if (!jobId) return;
+    if (!locator) return;
 
     try {
       setLoading(true);
-      const jobData = await jobsService.getJobById(jobId);
+      const jobData = await jobsService.getJobByLocator(locator);
       
       if (!jobData) {
         router.push('/');
@@ -121,7 +115,12 @@ export default function JobDetailPage() {
       setCategorySlug(finalCategorySlug);
       setSubCategorySlug(finalSubCategorySlug);
 
-      const correctUrl = generateJobUrl(finalCategorySlug, jobData.title || '', jobData.docId, finalSubCategorySlug);
+      if (!jobData.locator) {
+        router.push('/');
+        return;
+      }
+
+      const correctUrl = generateJobUrl(finalCategorySlug, jobData.title || '', jobData.locator, finalSubCategorySlug);
       const currentPath = window.location.pathname.replace(/\/$/, '');
       if (currentPath !== correctUrl) {
         window.history.replaceState({}, '', correctUrl);
@@ -129,6 +128,7 @@ export default function JobDetailPage() {
 
       const fullUrl = `${window.location.origin}${correctUrl}`;
       setDeepLinkUrl(fullUrl);
+      setJobIdForDeepLink(jobData.docId);
       setShouldTryDeepLink(true);
 
       setJob(jobData);
@@ -165,7 +165,7 @@ export default function JobDetailPage() {
     );
   }
 
-  if (!jobId) {
+  if (!locator) {
     return (
       <>
         <JobDetailSkeleton />

@@ -33,6 +33,8 @@ export default function SimilarJobs({ jobs, currentJobId, title }: SimilarJobsPr
             key={job.docId}
             job={job}
             onClick={async () => {
+              if (!job.locator) return;
+
               let categorySlug = 'general';
               let subCategorySlug: string | undefined = undefined;
               
@@ -51,7 +53,7 @@ export default function SimilarJobs({ jobs, currentJobId, title }: SimilarJobsPr
                 }
               }
               
-              const url = generateJobUrl(categorySlug, job.title || '', job.docId, subCategorySlug);
+              const url = generateJobUrl(categorySlug, job.title || '', job.locator, subCategorySlug);
               router.push(url);
             }}
             isHighlighted={

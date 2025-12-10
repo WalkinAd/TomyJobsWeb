@@ -84,6 +84,10 @@ export default function Home() {
   };
 
   const getJobUrl = async (job: Job): Promise<string> => {
+    if (!job.locator) {
+      return '/';
+    }
+
     let categorySlug = 'general';
     let subCategorySlug: string | undefined = undefined;
     
@@ -102,7 +106,7 @@ export default function Home() {
       }
     }
     
-    return generateJobUrl(categorySlug, job.title || '', job.docId, subCategorySlug);
+    return generateJobUrl(categorySlug, job.title || '', job.locator, subCategorySlug);
   };
 
   const featuredJobs = filteredJobs

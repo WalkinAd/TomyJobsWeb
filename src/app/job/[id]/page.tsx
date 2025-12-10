@@ -35,16 +35,30 @@ export default function JobLegacyRedirectPage() {
         return;
       }
 
+      if (!jobData.locator) {
+        router.push('/');
+        return;
+      }
+
       let categorySlug = 'general';
+      let subCategorySlug: string | undefined = undefined;
+
       if (jobData.catId) {
         const allCategories = await categoriesService.getAllCategories();
         const category = allCategories.find((cat) => cat.docId === jobData.catId);
         if (category) {
           categorySlug = slugify(category.name);
         }
+
+        if (jobData.subCatId) {
+          const subCategory = allCategories.find((cat) => cat.docId === jobData.subCatId);
+          if (subCategory) {
+            subCategorySlug = slugify(subCategory.name);
+          }
+        }
       }
 
-      const newUrl = generateJobUrl(categorySlug, jobData.title || '', jobData.docId);
+      const newUrl = generateJobUrl(categorySlug, jobData.title || '', jobData.locator, subCategorySlug);
       router.replace(newUrl);
     } catch (error) {
       router.push('/');

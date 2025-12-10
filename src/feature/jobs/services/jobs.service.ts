@@ -126,6 +126,49 @@ export const jobsService = {
     }
   },
 
+  async getJobByLocator(locator: string): Promise<Job | null> {
+    try {
+      const jobsRef = collection(db, "Jobs");
+      const q = query(jobsRef, where("locator", "==", locator));
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        return null;
+      }
+
+      const doc = snapshot.docs[0];
+      const data = doc.data();
+      return {
+        docId: doc.id,
+        jobId: doc.id,
+        catId: data.cat_id || "",
+        subCatId: data.subCat_id || "",
+        title: data.title || "",
+        description: data.description || "",
+        location: data.location || "",
+        mobileNumber: data.mobileNumber || "",
+        hiringType: data.hiringType || "",
+        status: data.status || "",
+        isNumberPublicly: data.isNumberPublicly || false,
+        timestamp: data.timestamp || null,
+        editedTimestamp: data.editedTimestamp || null,
+        expireTimestamp: data.expireTimestamp || null,
+        featureExpireTimestamp: data.featureExpireTimestamp || null,
+        userId: data.userId || "",
+        banner: data.banner || [],
+        favUserIds: data.favUserIds || [],
+        viewerUserIds: data.viewerUserIds || [],
+        responseTime: data.responseTime || "",
+        isVerified: data.isVerified || false,
+        locator: data.locator || "",
+        createdByUserId: data.createdByUserId || null,
+        createdByCompanyId: data.createdByCompanyId || null,
+      };
+    } catch (error) {
+      return null;
+    }
+  },
+
   async getSimilarJobs(
     subCatId: string,
     location: string,

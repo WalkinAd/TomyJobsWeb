@@ -58,30 +58,35 @@ export const slugify = (text: string): string => {
     .replace(/^-+|-+$/g, "");
 };
 
-export const parseJobSlug = (slug: string): { jobId: string } | null => {
+export const parseJobSlug = (
+  slug: string
+): { locator: string; jobTitle?: string } | null => {
   if (!slug) return null;
 
   const cleanSlug = slug.replace(/\/$/, "").trim();
-  const parts = cleanSlug.split("&");
-  if (parts.length < 2) return null;
+  const parts = cleanSlug.split("/");
 
-  const jobId = parts[parts.length - 1].replace(/\/$/, "").trim();
+  if (parts.length < 1) return null;
 
-  if (!jobId) return null;
+  const locator = parts[parts.length - 1].trim();
+  const jobTitle = parts.length > 1 ? parts.slice(0, -1).join("/") : undefined;
+
+  if (!locator) return null;
 
   return {
-    jobId,
+    locator,
+    jobTitle,
   };
 };
 
 export const generateJobUrl = (
   categorySlug: string,
   jobTitle: string,
-  jobId: string,
+  locator: string,
   subCategorySlug?: string
 ): string => {
   const titleSlug = slugify(jobTitle);
-  const jobSlug = `${titleSlug}&${jobId}`;
+  const jobSlug = `${titleSlug}/${locator}`;
 
   if (subCategorySlug) {
     return `/jobs/${categorySlug}/${subCategorySlug}/${jobSlug}`.replace(

@@ -28,10 +28,12 @@ export default function JobPublisherInfo({ job, categorySlug = 'general', subCat
     : false;
 
   const getJobShareUrl = (): string => {
-    const path = generateJobUrl(categorySlug, job.title || '', job.docId, subCategorySlug);
+    if (!job.locator) {
+      return window.location.origin;
+    }
+
+    const path = generateJobUrl(categorySlug, job.title || '', job.locator, subCategorySlug);
     const fullUrl = `${window.location.origin}${path}`;
-    
-   
     
     return fullUrl;
   };
