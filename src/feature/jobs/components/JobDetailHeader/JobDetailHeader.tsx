@@ -35,7 +35,6 @@ export default function JobDetailHeader({ job }: JobDetailHeaderProps) {
   };
 
   const handleMessage = () => {
-    console.log('navegar a chat');
   };
 
   return (

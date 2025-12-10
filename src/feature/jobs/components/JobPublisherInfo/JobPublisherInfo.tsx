@@ -1,6 +1,7 @@
 'use client';
 
 import { Job } from '@/feature/jobs/types/job.types';
+import { generateJobUrl } from '@/feature/jobs/utils/job.utils';
 import { useTranslations } from '@/shared/hooks/useTranslations';
 import { useDisplayNameAndImage } from '@/shared/hooks/useDisplayNameAndImage';
 import Button from '@/shared/components/Button/Button';
@@ -11,9 +12,11 @@ import styles from './JobPublisherInfo.module.scss';
 
 interface JobPublisherInfoProps {
   job: Job;
+  categorySlug?: string;
+  subCategorySlug?: string;
 }
 
-export default function JobPublisherInfo({ job }: JobPublisherInfoProps) {
+export default function JobPublisherInfo({ job, categorySlug = 'general', subCategorySlug }: JobPublisherInfoProps) {
   const t = useTranslations('jobDetail');
   const { name, imageUrl, isLoading, isVerified } = useDisplayNameAndImage({
     userId: job.userId,
@@ -23,6 +26,15 @@ export default function JobPublisherInfo({ job }: JobPublisherInfoProps) {
   const isPremium = job.featureExpireTimestamp
     ? new Date(job.featureExpireTimestamp) > new Date()
     : false;
+
+  const getJobShareUrl = (): string => {
+    const path = generateJobUrl(categorySlug, job.title || '', job.docId, subCategorySlug);
+    const fullUrl = `${window.location.origin}${path}`;
+    
+   
+    
+    return fullUrl;
+  };
 
   const getResponseTimeText = (responseTime?: string): string => {
     if (!responseTime) return '';
@@ -41,21 +53,20 @@ export default function JobPublisherInfo({ job }: JobPublisherInfoProps) {
   };
 
   const handleMessage = () => {
-    console.log('navegar a chat');
   };
 
   const handleReport = () => {
-    console.log('reportar job');
   };
 
   const handleShareWhatsApp = () => {
-    const url = window.location.href;
+    const url = getJobShareUrl();
     const text = job.title || '';
     window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
+    const url = getJobShareUrl();
+    navigator.clipboard.writeText(url);
   };
 
   return (

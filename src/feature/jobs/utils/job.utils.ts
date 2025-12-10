@@ -48,3 +48,47 @@ export const getJobImageUrl = (banner?: string[]): string => {
     "https://tse1.mm.bing.net/th?id=OIP.PPBMLiYljuluJZtFxAZwDQHaHa&pid=Api&rs=1&c=1&qlt=95&h=180";
   return banner && banner.length > 0 ? banner[0] : defaultImage;
 };
+
+export const slugify = (text: string): string => {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+
+export const parseJobSlug = (slug: string): { jobId: string } | null => {
+  if (!slug) return null;
+
+  const cleanSlug = slug.replace(/\/$/, "").trim();
+  const parts = cleanSlug.split("&");
+  if (parts.length < 2) return null;
+
+  const jobId = parts[parts.length - 1].replace(/\/$/, "").trim();
+
+  if (!jobId) return null;
+
+  return {
+    jobId,
+  };
+};
+
+export const generateJobUrl = (
+  categorySlug: string,
+  jobTitle: string,
+  jobId: string,
+  subCategorySlug?: string
+): string => {
+  const titleSlug = slugify(jobTitle);
+  const jobSlug = `${titleSlug}&${jobId}`;
+
+  if (subCategorySlug) {
+    return `/jobs/${categorySlug}/${subCategorySlug}/${jobSlug}`.replace(
+      /\/$/,
+      ""
+    );
+  }
+
+  return `/jobs/${categorySlug}/${jobSlug}`.replace(/\/$/, "");
+};

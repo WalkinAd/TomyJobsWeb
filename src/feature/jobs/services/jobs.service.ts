@@ -17,7 +17,6 @@ export const jobsService = {
       const snapshot = await getDocs(jobsRef);
 
       if (snapshot.empty) {
-        console.warn("no jobs found in firestore");
         return [];
       }
 
@@ -60,12 +59,8 @@ export const jobsService = {
         return true;
       });
 
-      console.log(
-        `loaded ${filteredJobs.length} jobs from ${jobs.length} total`
-      );
       return filteredJobs;
     } catch (error) {
-      console.error("error fetching jobs:", error);
       throw error;
     }
   },
@@ -86,7 +81,6 @@ export const jobsService = {
         } as Job;
       });
     } catch (error) {
-      console.error("error fetching jobs by category:", error);
       return [];
     }
   },
@@ -128,7 +122,6 @@ export const jobsService = {
         createdByCompanyId: data.createdByCompanyId || null,
       };
     } catch (error) {
-      console.error("error fetching job by id:", error);
       return null;
     }
   },
@@ -190,7 +183,6 @@ export const jobsService = {
 
       return filteredJobs.slice(0, 10);
     } catch (error) {
-      console.error("error fetching similar jobs:", error);
       return [];
     }
   },
@@ -247,7 +239,6 @@ export const jobsService = {
 
       return filteredJobs.slice(0, 10);
     } catch (error) {
-      console.error("error fetching jobs by subcategory:", error);
       return [];
     }
   },

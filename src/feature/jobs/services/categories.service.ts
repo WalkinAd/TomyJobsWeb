@@ -9,7 +9,6 @@ export const categoriesService = {
       const snapshot = await getDocs(categoriesRef);
 
       if (snapshot.empty) {
-        console.warn("no categories found in firestore");
         return [];
       }
 
@@ -27,12 +26,8 @@ export const categoriesService = {
       });
 
       const filteredCategories = categories.filter((cat) => cat.status === 1);
-      console.log(
-        `loaded ${filteredCategories.length} categories from ${categories.length} total`
-      );
       return filteredCategories;
     } catch (error) {
-      console.error("error fetching categories:", error);
       throw error;
     }
   },

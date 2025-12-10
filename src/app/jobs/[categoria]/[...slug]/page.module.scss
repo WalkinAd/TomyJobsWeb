@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use 'sass:color';
-@use '../../../shared/styles/variables' as *;
-@use '../../../shared/styles/mixins' as *;
+@use '../../../../shared/styles/variables' as *;
+@use '../../../../shared/styles/mixins' as *;
 
 .container {
   width: 100%;
@@ -54,6 +54,12 @@
 .separator {
   color: var(--text-secondary);
   margin: 0 map.get($spacing, xs);
+}
+
+.breadcrumbText {
+  color: var(--text-secondary);
+  font-family: $font-family;
+  @include font-size(sm);
 }
 
 .breadcrumbCurrent {

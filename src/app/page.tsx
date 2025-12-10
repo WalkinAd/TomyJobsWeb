@@ -8,6 +8,7 @@ import { categoriesService } from '@/feature/jobs/services/categories.service';
 import { Job } from '@/feature/jobs/types/job.types';
 import { Category } from '@/feature/jobs/types/category.types';
 import { useJobFilters } from '@/feature/jobs/hooks/useJobFilters';
+import { generateJobUrl, slugify } from '@/feature/jobs/utils/job.utils';
 import Header from '@/shared/components/Header/Header';
 import SearchBar from '@/shared/components/SearchBar/SearchBar';
 import CategorySlider from '@/shared/components/CategorySlider/CategorySlider';
@@ -57,7 +58,6 @@ export default function Home() {
       setJobs(jobsData);
       setCategories(categoriesData);
     } catch (error) {
-      console.error('error loading data:', error);
     } finally {
       setLoading(false);
     }
@@ -81,6 +81,28 @@ export default function Home() {
 
   const handleLocationFilterChange = (locationList: string[]) => {
     updateLocations(locationList);
+  };
+
+  const getJobUrl = async (job: Job): Promise<string> => {
+    let categorySlug = 'general';
+    let subCategorySlug: string | undefined = undefined;
+    
+    if (job.catId) {
+      const category = categories.find((cat) => cat.docId === job.catId);
+      if (category) {
+        categorySlug = slugify(category.name);
+      }
+    }
+    
+    if (job.subCatId) {
+      const allCategories = await categoriesService.getAllCategories();
+      const subCategory = allCategories.find((cat) => cat.docId === job.subCatId);
+      if (subCategory) {
+        subCategorySlug = slugify(subCategory.name);
+      }
+    }
+    
+    return generateJobUrl(categorySlug, job.title || '', job.docId, subCategorySlug);
   };
 
   const featuredJobs = filteredJobs
@@ -135,8 +157,9 @@ export default function Home() {
                   <JobCard
                     key={job.docId}
                     job={job}
-                    onClick={() => {
-                      router.push(`/jobs/${job.docId}`);
+                    onClick={async () => {
+                      const url = await getJobUrl(job);
+                      router.push(url);
                     }}
                   />
                 ))}
@@ -154,8 +177,9 @@ export default function Home() {
                   <JobCard
                     key={job.docId}
                     job={job}
-                    onClick={() => {
-                      router.push(`/jobs/${job.docId}`);
+                    onClick={async () => {
+                      const url = await getJobUrl(job);
+                      router.push(url);
                     }}
                   />
                 ))}

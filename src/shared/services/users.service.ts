@@ -20,24 +20,14 @@ export interface UserData {
 export const usersService = {
   async getUserById(userId: string): Promise<UserData | null> {
     try {
-      console.log("usersService.getUserById - iniciando, userId:", userId);
       const userRef = doc(db, "users", userId);
       const snapshot = await getDoc(userRef);
 
       if (!snapshot.exists()) {
-        console.log("usersService.getUserById - usuario no existe");
         return null;
       }
 
       const data = snapshot.data();
-      console.log("usersService.getUserById - datos del usuario:", {
-        userId: snapshot.id,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        activePlan: data.activePlan,
-        senderNameProById: data.senderNameProById,
-        isVerified: data.isVerified,
-      });
 
       const activePlan = data.activePlan
         ? {
@@ -57,10 +47,8 @@ export const usersService = {
         isVerified: data.isVerified || false,
       };
 
-      console.log("usersService.getUserById - resultado procesado:", result);
       return result;
     } catch (error) {
-      console.error(`error fetching user ${userId}:`, error);
       return null;
     }
   },

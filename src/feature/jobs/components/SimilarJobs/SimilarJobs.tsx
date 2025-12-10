@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { Job } from '@/feature/jobs/types/job.types';
+import { categoriesService } from '@/feature/jobs/services/categories.service';
+import { generateJobUrl, slugify } from '@/feature/jobs/utils/job.utils';
 import { useTranslations } from '@/shared/hooks/useTranslations';
 import JobCard from '@/shared/components/JobCard/JobCard';
 import styles from './SimilarJobs.module.scss';
@@ -30,8 +32,27 @@ export default function SimilarJobs({ jobs, currentJobId, title }: SimilarJobsPr
           <JobCard
             key={job.docId}
             job={job}
-            onClick={() => {
-              router.push(`/jobs/${job.docId}`);
+            onClick={async () => {
+              let categorySlug = 'general';
+              let subCategorySlug: string | undefined = undefined;
+              
+              if (job.catId) {
+                const allCategories = await categoriesService.getAllCategories();
+                const category = allCategories.find((cat) => cat.docId === job.catId);
+                if (category) {
+                  categorySlug = slugify(category.name);
+                }
+                
+                if (job.subCatId) {
+                  const subCategory = allCategories.find((cat) => cat.docId === job.subCatId);
+                  if (subCategory) {
+                    subCategorySlug = slugify(subCategory.name);
+                  }
+                }
+              }
+              
+              const url = generateJobUrl(categorySlug, job.title || '', job.docId, subCategorySlug);
+              router.push(url);
             }}
             isHighlighted={
               job.featureExpireTimestamp
