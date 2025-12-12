@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { jobsService } from '@/feature/jobs/services/jobs.service';
 import { categoriesService } from '@/feature/jobs/services/categories.service';
-import { Job } from '@/feature/jobs/types/job.types';
 import { parseJobSlug, generateJobUrl, slugify } from '@/feature/jobs/utils/job.utils';
+import type { SerializedJob } from '@/feature/jobs/utils/job.serialization';
+import type { Job } from '@/feature/jobs/types/job.types';
 import { useDeepLink } from '@/shared/hooks/useDeepLink';
 import { useTranslations } from '@/shared/hooks/useTranslations';
 import ImageCarousel from '@/feature/jobs/components/ImageCarousel/ImageCarousel';
@@ -15,44 +16,36 @@ import JobPublisherInfo from '@/feature/jobs/components/JobPublisherInfo/JobPubl
 import SimilarJobs from '@/feature/jobs/components/SimilarJobs/SimilarJobs';
 import Footer from '@/shared/components/Footer/Footer';
 import { JobDetailSkeleton } from '@/shared/components/Skeleton/Skeleton';
-import styles from './page.module.scss';
+import styles from '../page.module.scss';
 
-export default function JobDetailPage() {
-  const params = useParams();
+interface JobDetailClientProps {
+  categoria: string;
+  slugArray: string[];
+  initialJob: SerializedJob | null;
+  categoryName?: string;
+  subCategoryName?: string;
+  categorySlug: string;
+  subCategorySlug?: string;
+}
+
+export default function JobDetailClient({
+  categoria,
+  slugArray,
+  initialJob,
+  categoryName,
+  subCategoryName,
+  categorySlug,
+  subCategorySlug,
+}: JobDetailClientProps) {
   const router = useRouter();
   const t = useTranslations('app');
   const tNav = useTranslations('navigation');
   const tJob = useTranslations('jobDetail');
   
-  const categoria = params.categoria as string;
-  const slugArray = params.slug as string[];
-  
-  let subCategoriaFromUrl: string | undefined = undefined;
-  let jobSlugFromUrl: string = '';
-  
-  if (slugArray && slugArray.length > 0) {
-    if (slugArray.length > 1) {
-      subCategoriaFromUrl = decodeURIComponent(slugArray[0]);
-      jobSlugFromUrl = slugArray.slice(1).join('/');
-    } else {
-      jobSlugFromUrl = slugArray.join('/');
-    }
-  }
-  
-  const slug = jobSlugFromUrl ? decodeURIComponent(jobSlugFromUrl) : '';
-  
-  const [job, setJob] = useState<Job | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [similarJobs, setSimilarJobs] = useState<Job[]>([]);
-  const [peopleAlsoSearchFor, setPeopleAlsoSearchFor] = useState<Job[]>([]);
-  const [locator, setLocator] = useState<string | null>(null);
-  const [categorySlug, setCategorySlug] = useState<string>(categoria);
-  const [subCategorySlug, setSubCategorySlug] = useState<string | undefined>(subCategoriaFromUrl);
-  const [categoryName, setCategoryName] = useState<string | undefined>(undefined);
-  const [subCategoryName, setSubCategoryName] = useState<string | undefined>(undefined);
-
-  const parsedSlug = slug ? parseJobSlug(slug) : null;
-  const extractedLocator = parsedSlug?.locator || null;
+  const [job, setJob] = useState<SerializedJob | null>(initialJob);
+  const [loading, setLoading] = useState(!initialJob);
+  const [similarJobs, setSimilarJobs] = useState<SerializedJob[]>([]);
+  const [peopleAlsoSearchFor, setPeopleAlsoSearchFor] = useState<SerializedJob[]>([]);
   const [deepLinkUrl, setDeepLinkUrl] = useState<string | undefined>(undefined);
   const [shouldTryDeepLink, setShouldTryDeepLink] = useState(false);
   const [jobIdForDeepLink, setJobIdForDeepLink] = useState<string>('');
@@ -64,95 +57,54 @@ export default function JobDetailPage() {
   });
 
   useEffect(() => {
-    if (extractedLocator) {
-      setLocator(extractedLocator);
-    }
-  }, [extractedLocator]);
-
-  useEffect(() => {
-    if (locator && shouldShowWeb) {
+    if (initialJob) {
+      setJob(initialJob);
+      setLoading(false);
+      loadRelatedJobs(initialJob);
+      setupDeepLink(initialJob);
+    } else if (shouldShowWeb) {
       loadJob();
     }
-  }, [locator, shouldShowWeb]);
+  }, [initialJob, shouldShowWeb]);
 
-  useEffect(() => {
-    if (!extractedLocator && slug && shouldShowWeb) {
+  const loadJob = async () => {
+    let subCategoriaFromUrl: string | undefined = undefined;
+    let jobSlugFromUrl: string = '';
+    
+    if (slugArray && slugArray.length > 0) {
+      if (slugArray.length > 1) {
+        subCategoriaFromUrl = decodeURIComponent(slugArray[0]);
+        jobSlugFromUrl = slugArray.slice(1).join('/');
+      } else {
+        jobSlugFromUrl = slugArray.join('/');
+      }
+    }
+    
+    const slug = jobSlugFromUrl ? decodeURIComponent(jobSlugFromUrl) : '';
+    const parsedSlug = slug ? parseJobSlug(slug) : null;
+    const extractedLocator = parsedSlug?.locator || null;
+
+    if (!extractedLocator) {
       setTimeout(() => {
         router.push('/');
       }, 1000);
+      return;
     }
-  }, [extractedLocator, slug, shouldShowWeb, router]);
-
-  const loadJob = async () => {
-    if (!locator) return;
 
     try {
       setLoading(true);
-      const jobData = await jobsService.getJobByLocator(locator);
+      const jobData = await jobsService.getJobByLocator(extractedLocator);
       
       if (!jobData) {
         router.push('/');
         return;
       }
 
-      let finalCategorySlug = categoria;
-      let finalSubCategorySlug: string | undefined = undefined;
-      
-      const allCategories = await categoriesService.getAllCategories();
-      
-      if (jobData.catId) {
-        const category = allCategories.find((cat) => cat.docId === jobData.catId);
-        if (category) {
-          finalCategorySlug = slugify(category.name);
-          setCategoryName(category.name);
-        }
-      }
-      
-      if (jobData.subCatId) {
-        const subCategory = allCategories.find((cat) => cat.docId === jobData.subCatId);
-        if (subCategory) {
-          finalSubCategorySlug = slugify(subCategory.name);
-          setSubCategoryName(subCategory.name);
-        }
-      }
-      
-      setCategorySlug(finalCategorySlug);
-      setSubCategorySlug(finalSubCategorySlug);
-
-      if (!jobData.locator) {
-        router.push('/');
-        return;
-      }
-
-      const correctUrl = generateJobUrl(finalCategorySlug, jobData.title || '', jobData.locator, finalSubCategorySlug);
-      const currentPath = window.location.pathname.replace(/\/$/, '');
-      if (currentPath !== correctUrl) {
-        window.history.replaceState({}, '', correctUrl);
-      }
-
-      const fullUrl = `${window.location.origin}${correctUrl}`;
-      setDeepLinkUrl(fullUrl);
-      setJobIdForDeepLink(jobData.docId);
-      setShouldTryDeepLink(true);
-
-      setJob(jobData);
-
-      if (jobData.subCatId && jobData.location) {
-        const similar = await jobsService.getSimilarJobs(
-          jobData.subCatId,
-          jobData.location,
-          jobData.docId
-        );
-        setSimilarJobs(similar);
-      }
-
-      if (jobData.subCatId) {
-        const peopleAlsoSearch = await jobsService.getJobsBySubCategory(
-          jobData.subCatId,
-          jobData.docId
-        );
-        setPeopleAlsoSearchFor(peopleAlsoSearch);
-      }
+      const { serializeJob } = await import('@/feature/jobs/utils/job.serialization');
+      const serializedJob = serializeJob(jobData);
+      setJob(serializedJob);
+      loadRelatedJobs(serializedJob);
+      setupDeepLink(serializedJob);
     } catch (error) {
       router.push('/');
     } finally {
@@ -160,7 +112,38 @@ export default function JobDetailPage() {
     }
   };
 
-  if (!shouldShowWeb) {
+  const loadRelatedJobs = async (jobData: SerializedJob) => {
+    const { serializeJobs } = await import('@/feature/jobs/utils/job.serialization');
+    
+    if (jobData.subCatId && jobData.location) {
+      const similar = await jobsService.getSimilarJobs(
+        jobData.subCatId,
+        jobData.location,
+        jobData.docId
+      );
+      setSimilarJobs(serializeJobs(similar));
+    }
+
+    if (jobData.subCatId) {
+      const peopleAlsoSearch = await jobsService.getJobsBySubCategory(
+        jobData.subCatId,
+        jobData.docId
+      );
+      setPeopleAlsoSearchFor(serializeJobs(peopleAlsoSearch));
+    }
+  };
+
+  const setupDeepLink = (jobData: SerializedJob) => {
+    if (!jobData.locator) return;
+
+    const correctUrl = generateJobUrl(categorySlug, jobData.title || '', jobData.locator, subCategorySlug);
+    const fullUrl = `${window.location.origin}${correctUrl}`;
+    setDeepLinkUrl(fullUrl);
+    setJobIdForDeepLink(jobData.docId);
+    setShouldTryDeepLink(true);
+  };
+
+  if (!initialJob && !shouldShowWeb) {
     return (
       <>
         <JobDetailSkeleton />
@@ -169,16 +152,7 @@ export default function JobDetailPage() {
     );
   }
 
-  if (!locator) {
-    return (
-      <>
-        <JobDetailSkeleton />
-        <Footer showAppPromo={false} />
-      </>
-    );
-  }
-
-  if (loading) {
+  if (!initialJob && loading) {
     return (
       <>
         <JobDetailSkeleton />

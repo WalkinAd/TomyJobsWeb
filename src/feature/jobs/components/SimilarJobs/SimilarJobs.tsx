@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Job } from '@/feature/jobs/types/job.types';
+import type { SerializedJob } from '@/feature/jobs/utils/job.serialization';
 import { categoriesService } from '@/feature/jobs/services/categories.service';
 import { generateJobUrl, slugify } from '@/feature/jobs/utils/job.utils';
 import { useTranslations } from '@/shared/hooks/useTranslations';
@@ -9,7 +9,7 @@ import JobCard from '@/shared/components/JobCard/JobCard';
 import styles from './SimilarJobs.module.scss';
 
 interface SimilarJobsProps {
-  jobs: Job[];
+  jobs: SerializedJob[];
   currentJobId: string;
   title?: string;
 }

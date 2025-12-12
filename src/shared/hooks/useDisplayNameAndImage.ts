@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usersService, UserData } from "@/shared/services/users.service";
 import { companiesService } from "@/shared/services/companies.service";
-import { Job } from "@/feature/jobs/types/job.types";
+import type { SerializedJob } from "@/feature/jobs/utils/job.serialization";
 import { Timestamp } from "firebase/firestore";
 
 interface DisplayInfo {
@@ -15,7 +15,7 @@ interface DisplayInfo {
 
 interface UseDisplayNameAndImageProps {
   userId?: string;
-  job?: Job;
+  job?: SerializedJob;
 }
 
 export function useDisplayNameAndImage({

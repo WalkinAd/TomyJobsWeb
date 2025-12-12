@@ -1,6 +1,6 @@
 'use client';
 
-import { Job } from '@/feature/jobs/types/job.types';
+import type { SerializedJob } from '@/feature/jobs/utils/job.serialization';
 import { generateJobUrl } from '@/feature/jobs/utils/job.utils';
 import { useTranslations } from '@/shared/hooks/useTranslations';
 import { useDisplayNameAndImage } from '@/shared/hooks/useDisplayNameAndImage';
@@ -11,7 +11,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 import styles from './JobPublisherInfo.module.scss';
 
 interface JobPublisherInfoProps {
-  job: Job;
+  job: SerializedJob;
   categorySlug?: string;
   subCategorySlug?: string;
 }

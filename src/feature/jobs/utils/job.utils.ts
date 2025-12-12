@@ -1,7 +1,8 @@
 import { Timestamp } from "firebase/firestore";
 
 export const formatJobDate = (
-  timestamp: Timestamp | Date | string | null | undefined
+  timestamp: Timestamp | Date | string | null | undefined,
+  locale: string = "es"
 ): string => {
   if (!timestamp) return "";
 
@@ -19,9 +20,17 @@ export const formatJobDate = (
     date = timestamp as Date;
   }
 
-  return new Intl.DateTimeFormat("en-US", {
+  const localeMap: Record<string, string> = {
+    es: "es-ES",
+    en: "en-US",
+  };
+
+  const dateLocale = localeMap[locale] || localeMap.es;
+
+  return new Intl.DateTimeFormat(dateLocale, {
     year: "numeric",
     month: "short",
+    day: "numeric",
   }).format(date);
 };
 
@@ -89,11 +98,8 @@ export const generateJobUrl = (
   const jobSlug = `${titleSlug}/${locator}`;
 
   if (subCategorySlug) {
-    return `/jobs/${categorySlug}/${subCategorySlug}/${jobSlug}`.replace(
-      /\/$/,
-      ""
-    );
+    return `/${categorySlug}/${subCategorySlug}/${jobSlug}`.replace(/\/$/, "");
   }
 
-  return `/jobs/${categorySlug}/${jobSlug}`.replace(/\/$/, "");
+  return `/${categorySlug}/${jobSlug}`.replace(/\/$/, "");
 };

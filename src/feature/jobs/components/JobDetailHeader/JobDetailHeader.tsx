@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Job } from '@/feature/jobs/types/job.types';
+import type { SerializedJob } from '@/feature/jobs/utils/job.serialization';
 import { useTranslations } from '@/shared/hooks/useTranslations';
 import { useDisplayNameAndImage } from '@/shared/hooks/useDisplayNameAndImage';
 import Button from '@/shared/components/Button/Button';
@@ -10,7 +10,7 @@ import { getJobImageUrl } from '@/feature/jobs/utils/job.utils';
 import styles from './JobDetailHeader.module.scss';
 
 interface JobDetailHeaderProps {
-  job: Job;
+  job: SerializedJob;
 }
 
 export default function JobDetailHeader({ job }: JobDetailHeaderProps) {

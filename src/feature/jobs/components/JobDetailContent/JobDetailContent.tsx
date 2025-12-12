@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Job } from '@/feature/jobs/types/job.types';
+import type { SerializedJob } from '@/feature/jobs/utils/job.serialization';
 import { useTranslations } from '@/shared/hooks/useTranslations';
+import { useLocale } from '@/shared/hooks/useLocale';
 import { formatJobDate } from '@/feature/jobs/utils/job.utils';
 import { IoLocationOutline, IoEyeOutline, IoTimeOutline } from 'react-icons/io5';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
@@ -10,13 +11,14 @@ import styles from './JobDetailContent.module.scss';
 import Button from '@/shared/components/Button/Button';
 
 interface JobDetailContentProps {
-  job: Job;
+  job: SerializedJob;
   categoryName?: string;
   subCategoryName?: string;
 }
 
 export default function JobDetailContent({ job, categoryName, subCategoryName }: JobDetailContentProps) {
   const t = useTranslations('jobDetail');
+  const { locale } = useLocale();
   const [isFavorite, setIsFavorite] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
 
@@ -86,7 +88,7 @@ export default function JobDetailContent({ job, categoryName, subCategoryName }:
         {job.timestamp && (
           <div className="flex-row items-center gap-xs">
             <IoTimeOutline size={16} />
-            <span>{formatJobDate(job.timestamp)}</span>
+            <span>{formatJobDate(job.timestamp, locale)}</span>
           </div>
         )}
       </div>
@@ -140,7 +142,7 @@ export default function JobDetailContent({ job, categoryName, subCategoryName }:
         {job.timestamp && (
           <div className="flex-row items-start gap-s">
             <span className={styles.detailLabel}>{t('lbl_created_at')}:</span>
-            <span>{formatJobDate(job.timestamp)}</span>
+            <span>{formatJobDate(job.timestamp, locale)}</span>
           </div>
         )}
         {job.locator && (
@@ -164,7 +166,7 @@ export default function JobDetailContent({ job, categoryName, subCategoryName }:
         {job.expireTimestamp && (
           <div className="flex-row items-start gap-s">
             <span className={styles.detailLabel}>{t('lbl_expires_at')}:</span>
-            <span>{formatJobDate(new Date(job.expireTimestamp))}</span>
+            <span>{formatJobDate(new Date(job.expireTimestamp), locale)}</span>
           </div>
         )}
         {job.isNumberPublicly && job.mobileNumber && (
@@ -173,16 +175,10 @@ export default function JobDetailContent({ job, categoryName, subCategoryName }:
             <span>{job.mobileNumber}</span>
           </div>
         )}
-        {job.status && (
-          <div className="flex-row items-start gap-s">
-            <span className={styles.detailLabel}>{t('lbl_status')}:</span>
-            <span>{job.status}</span>
-          </div>
-        )}
         {job.editedTimestamp && (
           <div className="flex-row items-start gap-s">
             <span className={styles.detailLabel}>{t('lbl_edited_at')}:</span>
-            <span>{formatJobDate(job.editedTimestamp)}</span>
+            <span>{formatJobDate(job.editedTimestamp, locale)}</span>
           </div>
         )}
       </div>

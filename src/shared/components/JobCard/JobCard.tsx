@@ -1,15 +1,16 @@
 'use client';
 
-import { Job } from '@/feature/jobs/types/job.types';
+import type { SerializedJob } from '@/feature/jobs/utils/job.serialization';
 import { formatJobDate, getDaysLeft, getCountryFromLocation, getJobImageUrl } from '@/feature/jobs/utils/job.utils';
 import { useTranslations } from '@/shared/hooks/useTranslations';
+import { useLocale } from '@/shared/hooks/useLocale';
 import { IoLocation } from 'react-icons/io5';
 import { FaEye } from 'react-icons/fa';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import styles from './JobCard.module.scss';
 
 interface JobCardProps {
-  job: Job;
+  job: SerializedJob;
   onClick?: () => void;
   isHighlighted?: boolean;
   isDisabled?: boolean;
@@ -26,6 +27,7 @@ export default function JobCard({
   onFavoriteToggle
 }: JobCardProps) {
   const t = useTranslations('home');
+  const { locale } = useLocale();
   const imageUrl = getJobImageUrl(job.banner);
   const viewsCount = job.viewerUserIds?.length || 0;
   const daysLeft = getDaysLeft(job.expireTimestamp);
@@ -89,7 +91,7 @@ export default function JobCard({
               {daysLeft !== null ? (
                 <span className={styles.daysLeft}>{daysLeft} {t('lbl_days')}</span>
               ) : (
-                formatJobDate(job.timestamp)
+                formatJobDate(job.timestamp, locale)
               )}
             </span>
           )}

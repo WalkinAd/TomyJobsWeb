@@ -1,201 +1,40 @@
-'use client';
-
-import { useEffect, useState, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
-import { useTranslations } from '@/shared/hooks/useTranslations';
+import type { Metadata } from 'next';
 import { jobsService } from '@/feature/jobs/services/jobs.service';
 import { categoriesService } from '@/feature/jobs/services/categories.service';
-import { Job } from '@/feature/jobs/types/job.types';
-import { Category } from '@/feature/jobs/types/category.types';
-import { useJobFilters } from '@/feature/jobs/hooks/useJobFilters';
-import { generateJobUrl, slugify } from '@/feature/jobs/utils/job.utils';
+import { serializeJobs } from '@/feature/jobs/utils/job.serialization';
 import Header from '@/shared/components/Header/Header';
-import SearchBar from '@/shared/components/SearchBar/SearchBar';
-import CategorySlider from '@/shared/components/CategorySlider/CategorySlider';
-import JobCard from '@/shared/components/JobCard/JobCard';
-import { HomePageSkeleton } from '@/shared/components/Skeleton/Skeleton';
-import EmptyState from '@/shared/components/EmptyState/EmptyState';
 import Footer from '@/shared/components/Footer/Footer';
-import styles from './page.module.scss';
+import HomeClient from './components/HomeClient';
+import HomeStructuredData from './components/HomeStructuredData';
 
-export default function Home() {
-  const t = useTranslations('home');
-  const router = useRouter();
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>();
+export const metadata: Metadata = {
+  title: 'TomyJobs - Encuentra tu trabajo ideal',
+  description: 'Plataforma para encontrar y publicar trabajos. Miles de ofertas de empleo en diferentes categorías y ubicaciones. Busca tu trabajo soñado hoy.',
+  keywords: ['trabajos', 'empleo', 'ofertas de trabajo', 'buscar trabajo', 'publicar trabajo', 'trabajos en españa', 'trabajos online'],
+  openGraph: {
+    title: 'TomyJobs - Encuentra tu trabajo ideal',
+    description: 'Plataforma para encontrar y publicar trabajos. Miles de ofertas de empleo en diferentes categorías y ubicaciones.',
+    url: '/',
+    type: 'website',
+  },
+  alternates: {
+    canonical: '/',
+  },
+};
 
-  const {
-    filters,
-    filteredJobs,
-    updateSearchQuery,
-    updateCategories,
-    updateLocations,
-  } = useJobFilters(jobs);
+export default async function Home() {
+  const [jobs, categories] = await Promise.all([
+    jobsService.getAllJobs(),
+    categoriesService.getMainCategories(),
+  ]);
 
-  const locations = useMemo(() => {
-    const locationSet = new Set<string>();
-    jobs.forEach((job) => {
-      if (job.location) {
-        locationSet.add(job.location);
-      }
-    });
-    return Array.from(locationSet).sort();
-  }, [jobs]);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      const [jobsData, categoriesData] = await Promise.all([
-        jobsService.getAllJobs(),
-        categoriesService.getMainCategories(),
-      ]);
-      setJobs(jobsData);
-      setCategories(categoriesData);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSearch = (query: string) => {
-    updateSearchQuery(query);
-  };
-
-  const handleCategorySelect = (categoryId: string) => {
-    const newSelection =
-      categoryId === selectedCategoryId ? [] : [categoryId];
-    setSelectedCategoryId(newSelection[0]);
-    updateCategories(newSelection);
-  };
-
-  const handleCategoryFilterChange = (categoryIds: string[]) => {
-    updateCategories(categoryIds);
-    setSelectedCategoryId(categoryIds[0]);
-  };
-
-  const handleLocationFilterChange = (locationList: string[]) => {
-    updateLocations(locationList);
-  };
-
-  const getJobUrl = async (job: Job): Promise<string> => {
-    if (!job.locator) {
-      return '/';
-    }
-
-    let categorySlug = 'general';
-    let subCategorySlug: string | undefined = undefined;
-    
-    if (job.catId) {
-      const category = categories.find((cat) => cat.docId === job.catId);
-      if (category) {
-        categorySlug = slugify(category.name);
-      }
-    }
-    
-    if (job.subCatId) {
-      const allCategories = await categoriesService.getAllCategories();
-      const subCategory = allCategories.find((cat) => cat.docId === job.subCatId);
-      if (subCategory) {
-        subCategorySlug = slugify(subCategory.name);
-      }
-    }
-    
-    return generateJobUrl(categorySlug, job.title || '', job.locator, subCategorySlug);
-  };
-
-  const featuredJobs = filteredJobs
-    .filter((job) => job.featureExpireTimestamp)
-    .slice(0, 4);
-
-  const regularJobs = filteredJobs.slice(0, 8);
-
-  if (loading) {
-    return (
-      <>
-        <Header />
-        <HomePageSkeleton isVisible={loading} />
-        <Footer />
-      </>
-    );
-  }
+  const serializedJobs = serializeJobs(jobs);
 
   return (
     <>
+      <HomeStructuredData jobs={serializedJobs} categories={categories} />
       <Header />
-      <div className={`${styles.contentWrapper} py-xl`}>
-        <div className={styles.container}>
-          <h1 className={styles.title}>{t('msg_find_your_dream2')}</h1>
-          <SearchBar
-            categories={categories}
-            locations={locations} 
-            selectedCategoryIds={filters.categoryIds || []}
-            selectedLocations={filters.locations || []}
-            onSearch={handleSearch}
-            onCategoryChange={handleCategoryFilterChange}
-            onLocationChange={handleLocationFilterChange}
-          />
-
-          {categories.length > 0 && (
-            <div className={styles.categoriesSection}>
-              <CategorySlider
-                categories={categories}
-                selectedCategoryId={selectedCategoryId}
-                onCategorySelect={handleCategorySelect}
-              />
-            </div>
-          )}
-
-          {featuredJobs.length > 0 && (
-            <section className={styles.jobsSection}>
-              <div className="flex-between mb-l">
-                <h2 className={styles.sectionTitle}>{t('lbl_top_jobs')}</h2>
-              </div>
-              <div className={styles.jobsGrid}>
-                {featuredJobs.map((job) => (
-                  <JobCard
-                    key={job.docId}
-                    job={job}
-                    onClick={async () => {
-                      const url = await getJobUrl(job);
-                      router.push(url);
-                    }}
-                  />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {regularJobs.length > 0 && (
-            <section className={styles.jobsSection}>
-              <div className="flex-between mb-l">
-                <h2 className={styles.sectionTitle}>{t('lbl_recent_jobs')}</h2>
-              </div>
-              <div className={styles.jobsGrid}>
-                {regularJobs.map((job) => (
-                  <JobCard
-                    key={job.docId}
-                    job={job}
-                    onClick={async () => {
-                      const url = await getJobUrl(job);
-                      router.push(url);
-                    }}
-                  />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {filteredJobs.length === 0 && !loading && (
-            <EmptyState text={t('lbl_no_jobs')} />
-          )}
-        </div>
-      </div>
+      <HomeClient initialJobs={serializedJobs} initialCategories={categories} />
       <Footer />
     </>
   );

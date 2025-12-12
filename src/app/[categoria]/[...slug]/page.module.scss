@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use 'sass:color';
-@use '../../../../shared/styles/variables' as *;
-@use '../../../../shared/styles/mixins' as *;
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
 
 .container {
   width: 100%;
