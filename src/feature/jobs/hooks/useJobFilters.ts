@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Job } from "../types/job.types";
+import { SerializedJob } from "../utils/job.serialization";
 
 export interface JobFilters {
   searchQuery?: string;
@@ -7,7 +7,7 @@ export interface JobFilters {
   locations?: string[];
 }
 
-function matchesSearchQuery(job: Job, searchQuery?: string): boolean {
+function matchesSearchQuery(job: SerializedJob, searchQuery?: string): boolean {
   if (!searchQuery || searchQuery.trim() === "") {
     return true;
   }
@@ -19,7 +19,7 @@ function matchesSearchQuery(job: Job, searchQuery?: string): boolean {
   return title.includes(query) || description.includes(query);
 }
 
-function matchesCategories(job: Job, categoryIds?: string[]): boolean {
+function matchesCategories(job: SerializedJob, categoryIds?: string[]): boolean {
   if (!categoryIds || categoryIds.length === 0) {
     return true;
   }
@@ -27,7 +27,7 @@ function matchesCategories(job: Job, categoryIds?: string[]): boolean {
   return job.catId ? categoryIds.includes(job.catId) : false;
 }
 
-function matchesLocations(job: Job, locations?: string[]): boolean {
+function matchesLocations(job: SerializedJob, locations?: string[]): boolean {
   if (!locations || locations.length === 0) {
     return true;
   }
@@ -43,7 +43,7 @@ function matchesLocations(job: Job, locations?: string[]): boolean {
   );
 }
 
-function matchesFilters(job: Job, filters: JobFilters): boolean {
+function matchesFilters(job: SerializedJob, filters: JobFilters): boolean {
   return (
     matchesSearchQuery(job, filters.searchQuery) &&
     matchesCategories(job, filters.categoryIds) &&
@@ -51,7 +51,7 @@ function matchesFilters(job: Job, filters: JobFilters): boolean {
   );
 }
 
-export function useJobFilters(jobs: Job[]) {
+export function useJobFilters(jobs: SerializedJob[]) {
   const [filters, setFilters] = useState<JobFilters>({});
 
   const filteredJobs = useMemo(() => {
